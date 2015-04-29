@@ -45,7 +45,7 @@
 		        <div class="login">
 		        	<!-- 用户登录信息 start-->
 		            <div class="login-form">
-		               <!-- action="${contextPath}/common/login/login.jsp" -->
+		               
 		            	<form method="post" action="${contextPath}/common/login/login.jsp" target="_self">
 		                	<!-- login title -->
 		                    <h1></h1>

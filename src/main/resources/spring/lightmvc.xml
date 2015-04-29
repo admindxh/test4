@@ -20,9 +20,9 @@
     		<property name="cachePattern">
     			<value>^.*(.*.js|.*.css|.*.gif|.*.png|.*.html)$</value>
     		</property>
-    		 
+    		<!-- 
     		<property name="expires" value=""></property>
-    		
+    		-->
     	</bean>
     	
         <bean class="org.lightframework.mvc.plugin.spring.SpringPlugin"/>        
@@ -39,8 +39,8 @@
     <bean class="org.lightframework.mvc.plugin.spring.RouteTable" init-method="register">
         <property name="routes">
             <value>
-            *     /                               home.index 
-			*     /index.do                       home.index
+            *     /                              home.index 
+			*     /index.do                      home.index
 			*     /{ActionOrController}.do  	 {ActionOrController}.index,home.{ActionOrController}
 			*     /{controller*}/{action}.do     {controller}.{action}
 			*     /jso/*     					 jso.index

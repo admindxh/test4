@@ -34,8 +34,6 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
 			$.dataservice("spring:exchangehbbService.dosave", user, function(response) {
 						$.dialogReturnValue(true);
 						$(document).dialogClose();
-					}else{
-					alert("登陆失败");
 					});
 		 
   }
