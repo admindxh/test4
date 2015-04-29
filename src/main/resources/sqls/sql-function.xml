@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>功能管理sql</comment>
+	
+	<entry key="function.list">
+	<![CDATA[
+		SELECT SP.ID,
+			   SP.NAME,
+			   SP.CODE,
+			   SP.CONTEXT,
+			   SP.URL,
+			   SP.DESCRIPTION,
+			   SP.PARENT,
+			   SPP.NAME PARENT_NAME
+		FROM   SEC_PERMISSION SP
+		LEFT OUTER JOIN SEC_PERMISSION SPP
+		ON SP.PARENT = SPP.ID
+		WHERE    SP.TYPE = #type#
+		{? AND SP.NAME like CONCAT(CONCAT('%',#name#),'%') ESCAPE '/'}
+		{? AND SP.PARENT = #parentId#}
+	]]>
+	</entry>
+	
+	<!--检查权限代码是否唯一-->
+	<entry key="function.checkfunctionCode">
+	<![CDATA[
+		SELECT COUNT(*) FROM SEC_PERMISSION WHERE CODE = ?
+	]]>
+	</entry>
+	
+	<!--检查权限代码是否唯一（更新）-->
+	<entry key="function.checkfunctionCodeForUpdate">
+	<![CDATA[
+		SELECT COUNT(*) FROM SEC_PERMISSION WHERE CODE = ? AND ID <> ?
+	]]>
+	</entry>
+	
+	<entry key="function.rule.list">
+	<![CDATA[
+		SELECT SPR.ID,
+			   SPR.OPERATION_ID,
+			   SPR.NAME,
+			   SPR.PRIORITY,
+			   SPR.RULE,
+			   SPR.BEHAVIOUR,
+			   SPR.DESCRIPTION,
+			   SP.NAME PARENT_NAME
+		FROM   SEC_Permission_Rule SPR,
+			   SEC_PERMISSION     SP
+		WHERE  SPR.OPERATION_ID = SP.ID
+		AND    OPERATION_ID = #parentId#
+		{? AND SPR.NAME LIKE CONCAT(CONCAT('%',#name#),'%') ESCAPE '/'}
+		ORDER  BY SPR.PRIORITY DESC
+	]]>
+	</entry>
+</properties>

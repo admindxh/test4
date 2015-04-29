@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>下拉树控件</title>
+
+	<link rel="stylesheet" type="text/css" href="../jquery.cascadeselect.css" class="view-source" >
+	<link  href="../../../../themes/default/style-all.css" class="view-source" rel="stylesheet">
+	<script src="../../../../scripts/jquery.js"  class="view-source" type="text/javascript"></script>
+	<script src="../../../../scripts/common.js"  class="view-source" type="text/javascript"></script>
+	<script src="../../../../scripts/browserfix.js" type="text/javascript" ></script>
+	
+	<script type="text/javascript" src="../jquery.cascadeselect.js" class="view-source"></script>
+<script src="../../demo.js"></script>
+	<link href="../../demo.css" rel="stylesheet">
+<script class="view-source noparse" >
+	$(function(){
+		//1.静态数据
+		$(".first").cascadeselect({
+			CommandName : 'java.tree.command',
+			params : {
+				daoBeanName:'dao',
+			 	sqlId : 'cascade.first'
+		    },
+			target:[{
+				selector:".two",
+				CommandName : 'java.tree.command',
+				params : {
+					daoBeanName:'dao',
+				 	sqlId : 'cascade.second'
+			    },
+				target:{
+					selector:".three",
+					data:function(id,text){
+						var data= [] ;
+						data.push({id:"three0_"+id,text:"three0_"+text}) ;
+						data.push({id:"three1_"+id,text:"three1_"+text}) ;
+						data.push({id:"three2_"+id,text:"three2_"+text,selected:true}) ;
+						data.push({id:"three3_"+id,text:"three3_"+text}) ;
+						data.push({id:"three4_"+id,text:"three4_"+text}) ;
+						return data ;
+					},
+					target:{
+						selector:".btn1",
+						type:"button",
+						trigger:"click",
+						beforeAction:function(prev,content){
+							return true ;
+						} ,
+						action:function(prev,content){
+							//alert( prev);
+							//alert($(prev).val());
+						}/*,
+						afterAction:function(prev,content){
+							
+						}*/
+					}
+				}
+			},{
+				selector:".two1",
+				data:function(id,text){
+					var data= [] ;
+					data.push({id:"two10_"+id,text:"two10_"+text}) ;
+					data.push({id:"two11_"+id,text:"two11_"+text}) ;
+					data.push({id:"two12_"+id,text:"two12_"+text}) ;
+					data.push({id:"two13_"+id,text:"two13_"+text,selected:true}) ;
+					data.push({id:"two14_"+id,text:"two14_"+text}) ;
+					return data ;
+				},beforeAction:function(prev,content){
+					var val = $(prev).val() ;
+
+					if(val == 'root4_'){
+						//动态添加可选择项目
+						content.target = {
+							selector:".btn2",
+							type:"button",
+							trigger:"click"
+						}
+					}else{
+						content.target = {} ;
+					}
+						
+					return true ;
+				} 
+			}]
+		}) ;
+	}) ;
+</script>
+	
+</head>
+
+<body>
+
+	
+	<div style="padding:10px;" class="form-horizontal view-source noparse">
+		
+		<select class="first">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+		<br/><br/><br/>
+		<select class="two" defaultValue="113">
+		</select>
+		<select class="two1">
+		</select>
+		<br/><br/><br/>
+		<select class="three">
+		</select>
+		
+		<br/><br/><br/>
+		<button class="btn1" onclick="alert('级联选择触发点击事件（from tow）');">btn1</button>
+
+		<button class="btn2" onclick="alert(' 级联选择触发点击事件(from tow2)');">btn2</button>
+	</div>
+</body>
+</html>
+	
+		<style>
+			body{
+				overflow:hidden;
+				padding:0px;
+			}
+		</style>
+		<script>
+			(function(){
+				window._setIFrameHeight = function(iframe,height){
+				   if($.browser.msie&&($.browser.version==6.0)&&!$.support.style){
+						//do nothing
+				   }else{
+						$(iframe).css("height",height+"px") ;
+				   }
+					window._agentAutoHeight() ;
+				} ;
+				
+				function agentAutoHeight(){
+					var bHeight = document.body.scrollHeight;
+					var dHeight = document.documentElement.scrollHeight;
+					var oHeight = document.body.offsetHeight;
+					var b_height =Math.max(oHeight,Math.max(bHeight,dHeight))+50;
+					
+					var b_iframe = document.getElementById("crossdomain_agent_iframe");     
+					var src = b_iframe.src.split("#")[0] ;
+					b_iframe.src = src+"#"+b_height;
+				}
+				
+				window._agentAutoHeight = agentAutoHeight ;
+			
+			
+				if(window.location.href.indexOf("/agent.html")!=-1)
+					return ;
+			
+				function getHost(){
+					var host = window.location.host ;
+					return host.split(":")[0] ;
+				}
+				
+				var port = '80' ;
+				
+				var baseUrl = "http://"+getHost()+":80/bingo-ui-web" ;
+				if(port == '80' || port == ''){
+					baseUrl = "http://"+getHost()+"/bingo-ui-web" ;
+				}
+				
+				
+				var _crossdomain_agent_iframe_url = baseUrl+"/view/crossdomain/agent.html"  ;
+				
+				
+				if(!window.$){
+					document.write('<script src="'+baseUrl+"/statics/scripts/jquery.js"+'" onload="_loadjQuery()">\<\/script>') ;
+					
+					window._loadjQuery = function(){
+						$(document.body).append('<iframe id="crossdomain_agent_iframe"  width="100%"  src="'+_crossdomain_agent_iframe_url+'" style="display:none"> ');
+						agentAutoHeight() ;
+						setTimeout(function(){
+							agentAutoHeight() ;
+						},500) ;
+					}
+				}else{
+					$(document.body).append('<iframe id="crossdomain_agent_iframe"  width="100%"  src="'+_crossdomain_agent_iframe_url+'" style="display:none"> ');
+					$(function(){
+						agentAutoHeight() ;
+						setTimeout(function(){
+							agentAutoHeight() ;
+						},500) ;
+					}) ;
+				}
+			})() ;
+		</script>
+	

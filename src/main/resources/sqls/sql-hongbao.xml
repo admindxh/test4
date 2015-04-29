@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>使用KISS 框架的简单示例</comment>
+
+	<!--根据hbcID获取红包池信息-->
+	<entry key="list.hongbaochi.guanli">
+         SELECT 
+              HBC.hbcID   ,
+              hb.hbcfk,
+              (case when HBc.hblb=0 then '普通红包' else '群红包' end) as hblb,
+              
+              HBC.hbnumber       ,
+              
+              HBC.aggreate  ,
+              
+              HBC.notes1       
+        
+        FROM hbdx_hbc HBC
+      
+        left join hbdx_hb hb on hb.hbcfk= HBC.hbcID
+        WHERE 1=1  
+        {? AND HBC.hbcID =#hbcID#}
+    </entry>
+	
+	<!-- 统计红包个数 -->
+	<entry key="list.hbc.hbgs">
+	    select sum(hbnumber) from hbdx_hbc HBC where 1=1 {? AND HBC.hbcID=#hbcID#}
+	</entry>
+	
+	
+	<!-- 统计红包总金额 -->
+	<entry key="list.hbc.total">
+	    select sum(aggreate) from hbdx_hbc HBC where 1=1  {? AND HBC.hbcID=#hbcID#}
+	</entry>
+	
+	<!-- 一对一派红包 -->
+	<entry key="redpackge.update.putonghb">
+	    select dljhm  from yhdx_dl dl where dl.dldxbh= ?
+	</entry>
+	
+	<!-- 更新红包池数据 -->
+	<entry key="list.hbc.update">
+	    UPDATE hbdx_hbc HBC SET
+	           HBC.hbnumber=#hbnumber#,
+	           HBC.aggreate=#aggreate#
+	       WHERE 1=1 
+	       {? AND HBC.hbcID=#hbcID#}
+	</entry>
+	
+	<!-- 群发红包更新用户数据 -->
+	<entry key="update.user.qunfa">
+	   update hbdx_user hbuser set 
+	          hbuser.hbgs=#hbgs#,
+	          hbuser.aggreatMount=#aggreatMount#
+	          where 1=1
+	          {? AND HBUSER.YHDXDH=#YHDXDH#}
+	</entry>
+	
+	<!-- 查询用户表中红包个数 -->
+	<entry key="user.list.hbgs">
+	   select hbgs from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh = #yhdxdh#}
+	</entry>
+	  
+	<!-- 查询每个红包金额 -->
+	<entry key="user.list.everyoneTotal">
+	   select everyoneTotal from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh = #yhdxdh#}
+	</entry>
+	
+	<!-- 查询总金额 -->
+	<entry key="user.list.aggreatMount">
+	   select aggreatMount from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh = #yhdxdh#}
+	</entry>
+	<!-- 抢红包 -->
+	<entry key="redpackge.putonghb">
+	  update  hbdx_user hbuser set   
+		           hbuser.hbgs=#hbgs#,
+		           hbuser.everyoneTotal=#everyoneTotal#,
+		           hbuser.aggreatMount=#aggreatMount#,
+		           hbuser.notes2=#notes2#
+
+	    where 1=1
+	    
+	    {? AND hbuser.yhdxdh = #yhdxdh#}
+		{? AND hbuser.username = #username#}
+	</entry>
+	
+	<!-- 一对一派红包 -->
+    <entry key="list.paihongb">
+      update  hbdx_user hbuser set   
+		           hbuser.hbgs=#hbgs#,
+		           hbuser.everyoneTotal=#everyoneTotal#,
+		           hbuser.aggreatMount=#aggreatMount#,
+		           hbuser.notes2=#notes2#
+
+	    where 1=1
+	    
+	    {? AND hbuser.yhdxdh = #yhdxdh#}
+    </entry>
+    
+    <!-- 统计红包个数（一对一） -->
+    <entry key="list.paihongb.one">
+        select hbgs from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh = #yhdxdh#} 
+    </entry>
+    <!-- 统计单个红包金额 （一对一）-->
+    <entry key="list.paihongb.onetotal">
+       select everyoneTotal from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh = #yhdxdh#}
+    </entry>
+    <!-- 统计红包总额（一对一） -->
+    <entry key="list.paihongb.number">
+       select aggreatMount from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh = #yhdxdh#}
+    </entry>
+	<!-- 红包兑换红包币更新用户信息 -->
+	<entry key="update.hbb">
+	   update  hbdx_user hbuser set   
+		           hbuser.aggreatMount=#aggreatMount#,
+		           hbuser.hbb=#hbb#
+	    where 1=1
+	    
+	    {? AND hbuser.yhdxdh = #yhdxdh#}
+	</entry>
+	
+    <!-- 统计所有用户 -->
+    <entry key="list.select.hbdxuser">
+    SELECT  HUSER.yhdxdh as ID,HUSER.USERNAME as TEXT FROM hbdx_user HUSER WHERE 1=1 
+    </entry>
+    
+    <!-- 用户系统随机选择一个用户 -->
+    <entry key="list.math.user">
+    SELECT  count(*) FROM hbdx_user HUSER WHERE 1=1
+    </entry>
+    
+    <!-- 随机获取用户ID -->
+    <entry key="list.math.id">
+       select * from (select rownum as no,yhdxdh from hbdx_user order by username) where 1=1 
+         {? AND no=#no#}
+    
+    </entry>
+    
+    <!-- 用户红包收益明细查询 -->
+    <entry key="list.sec.symx">
+        SELECT    hbuser.yhdxdh,hb.hbllfk,hb.yhdhfk,
+
+                  hbuser.username,
+                  hbuser.CRJE,
+                  hbuser.hbgs,
+                  hbuser.EVERYONETOTAL,
+                  hbuser.AGGREATMOUNT,
+                  (hbuser.crje*(select llbl from csb_ll where llfl='收益利率')*0.7) as rsy,
+                  hbuser.hbb,
+                  lv.llfl as yhjb,
+	              lv.status as statues ,
+	              hbuser.notes1,
+                  hbuser.NOTES2,
+                  hbuser.NOTES3
+	   
+	       FROM hbdx_user hbuser
+               left join hbdx_hb hb on hb.yhdhfk=hbuser.yhdxdh
+              
+               left join csb_ll lv on lv.llbh=hbuser.hbllfk
+              where 1=1
+              {? AND hbuser.yhdxdh=#yhdxdh#}
+              {? and hbuser.userphnoe=#userphnoe#}
+              {? AND STATUES =#STATUES#}
+              {? and lv.activate=#activate#}
+             {? AND USERNAME LIKE CONCAT(CONCAT('%',#USERNAME#),'%') ESCAPE '/'}
+              
+    </entry>
+    
+    <!-- 查询红包币利率 -->
+    
+    <entry key="list.lilv">
+       select lilv.llbl from csb_ll lilv 
+       where  llfl = '兑换红包币'
+       
+    </entry>
+    
+    <!-- 根据用户ID查询红包币 -->
+    <entry key="list.hbb">
+       select  huser.hbb  from hbdx_user huser where 1=1 {? AND HUSER.YHDXDH=#YHDXDH#}
+    </entry>
+    
+    <!-- 更新数据到红包表  -->
+    <entry key="update.hb">
+        update  hbdx_hb hb set   
+		           hb.hbdxdh=#hbdxdh#,
+		           hb.yhdhfk=#yhdhfk#,
+		           hb.hbb=#hbb#,
+		           hb.hbllfk=#hbllfk#
+
+	    where 1=1
+	    {? AND hb.hbdxdh=#hbdxdh#}
+	    {? AND hb.yhdhfk=#yhdhfk#}
+	    {? AND hb.hbllfk=#hbllfk#}
+    </entry>
+    
+    <!-- 团队提成明细查询 -->
+    <entry key="list.tuandui.selectmx">
+       select  hbuser.yhdxdh,hbuser.username,hbuser.CRJE,(hbuser.crje*(select llbl from csb_ll where llfl='收益利率')*0.7) as rsy,hb.hbjj,hbuser.aggreatMount,
+       mx.syje,hbuser.hbb,lv.status,lv.llfl as yhjb,mx.qsrq,mx.jsrq
+       
+     from hbdx_user hbuser
+     left join hbdx_hb hb on hb.yhdhfk=hbuser.yhdxdh
+     left join csb_ll lv on lv.llbh=hbuser.hbllfk
+     left join hbdx_symx mx on mx.yhdxdhfk =hbuser.yhdxdh
+     where 1=1
+     {? AND hbuser.yhdxdh=#yhdxdh#}
+     {? AND hbuser.status =#status#}
+     {? and userphnoe=#userphnoe#}
+     {? and lv.activate=#activate#}
+     {? AND USERNAME LIKE CONCAT(CONCAT('%',#USERNAME#),'%') ESCAPE '/'}
+    </entry>
+    
+    <!-- 用户注册时更新红包表信息 -->
+    <entry key="list.update.hb">
+       insert into  hbdx_hb  hb("hb.hbjj","hb.zhstatus","hb.crje","hb.czrq","hb.qxrq","hb.dqrq" ) 
+values(hb.hbjj=#hbjj#,hb.zhstatus="zhstatus",hb.crje=#crje#,hb.czrq=#czrq#,hb.qxrq=#qxrq#,hb.dqrq=#dqrq#)
+       
+    </entry>
+    
+    <!-- 查询红包基金 -->
+    <entry key="select.hbjj">
+      select  hbuser.crje*(select llbl from csb_ll where llfl='收益利率')*0.30 from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh=#yhdxdh#}
+    </entry>
+   
+    <!-- 查询没日分红 -->
+    <entry key="select.everyday.hongli">
+       select  hbuser.crje*(select llbl from csb_ll where llfl='收益利率') from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 查询利率 -->
+    <entry key="select.llbl">
+      select ll.llbl  from  csb_ll ll where 1=1  {? and ll.llbh=#llbh#}
+    </entry>
+    <!-- 根据用户ID查询利率ID -->
+    <entry key="hbll.llbhfk">
+       select  users.hbllfk from hbdx_user users where 1=1 {? AND users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 更新用户父级ID -->
+    <entry key="update.prentID">
+         update hbdx_user users set users.parentID=#parentID#,users.hbllfk=#hbllfk# where 1=1 {? AND USERS.yhdxdh=#yhdxdh#}
+    </entry>
+    
+    <!-- 查询用户父级id -->
+    <entry key="select.prentid.id">
+       select parentid from hbdx_user users where 1=1 {?and users.yhdxdh=#yhdxdh#}
+    </entry>
+    
+    <!-- 根据父级id查询用户的电话 -->
+    <entry key="select.parentid.phone">
+       select userphnoe from hbdx_user users where 1=1 {?and users.parentid=#parentid#}
+    </entry>
+    
+    <!-- 更新USERSUM字段 -->
+    <entry key="update_usernum">
+        update hbdx_user users set users.usernum=#usernum# where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 查询用户状态 -->
+    <entry key="select.user.statues">
+       SELECT lv.status FROM hbdx_user USERS left join csb_ll lv on lv.llbh=users.hbllfk  WHERE 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 查询下线用户ID -->
+    <entry key="select.userID">
+       select users.yhdxdh from hbdx_user users where 1=1 {? AND users.userjhm=#userjhm#}
+    </entry>
+    <!-- 查询usernum字段的值 -->
+    <entry key="select_usernum">
+      select users.usernum from hbdx_user users where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 查询收益明细表中的可提现金额 -->
+    <entry key="select.ketimoney">
+       select mx.ketimoney from hbdx_symx mx left join hbdx_user users on users.yhdxdh=mx.yhdxdhfk where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 根据用户USERNUM找到利率表ID -->
+    <entry key="select_usernum_lvID">
+       select  lv.llbh from csb_ll lv where 1=1 {? and lv.usernum=#usernum#}
+    </entry>
+    
+    <!-- 统计起始日期和结束日期的时间差 -->
+    <entry key="list.date">
+      select (to_date(to_char(sysdate,'yyyyMMdd'),'yyyyMMdd') - to_date(mx.qsrq,'yyyyMMdd')) as day from hbdx_user users left join hbdx_symx mx on mx.yhdxdhfk=users.yhdxdh where 1=1 {? and users.yhdxdh=#yhdxdh#} 
+    </entry>
+    <!-- 统计红包中的充值日期和到期日期(用于红包基金统计日期) -->
+    <entry key="list.hbjj.date">
+       select (to_date(to_char(sysdate,'yyyyMMdd'),'yyyyMMdd') - to_date(hb.czrq,'yyyyMMdd')) as day from hbdx_user users left join hbdx_hb hb on hb.yhdhfk=users.yhdxdh where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 根据ID查询用户的存入金额 -->
+    <entry key="list.users.crje">
+       select users.crje from hbdx_user users where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    
+    <!-- 查询新注册用户抢红包次数 -->
+    <entry key="select.times">
+       select users.times from hbdx_user users where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 更新用户级别 -->
+    <entry key="update.yhjb">
+      update hbdx_user users set users.yhjb=#yhjb# where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 更新times字段 -->
+    <entry key="update.times">
+      update hbdx_user users set users.times=#times# where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 更新用户状态 -->
+    <entry key="update.status">
+       update hbdx_user users set users.status=#status# where 1=1 {? and users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 更新红包基金字段 -->
+    <entry key="update.hbjj">
+       update hbdx_hb hb set hb.hbjj=#hbjj# where 1=1  {? and hb.yhdhfk=#yhdhfk#}
+    </entry>
+    <!-- 更新收益明细表中收益总额，红包基金总额 -->
+    <entry key="update.date.qsrqorjsrq">
+     update hbdx_symx mx set mx.withdrawal=#withdrawal#,mx.hbjjze=#hbjjze# where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <!-- 更新用户对象收益明细表起始日期和结束日期 -->
+    <entry key="update.mx.time">
+       update hbdx_symx mx set mx.qsrq=#qsrq#,mx.jsrq=#jsrq#,mx.ketimoney=#ketimoney# where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <!-- 查询每天红利 -->
+    <entry key="select.everyday.hlv">
+      select  hbuser.crje*(select llbl from csb_ll where llfl='收益利率') from hbdx_user hbuser where 1=1 {? and hbuser.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 根据父级ID查用户ID -->
+    <entry key="select.userid.parentid">
+      select users.yhdxdh from hbdx_user users where 1=1 {? and users.parentid=#parentid#}
+    </entry>
+    <!-- 更新收益明细表中的收益总额、红包币、报单积分字段 -->
+    <entry key="update.symx.sy">
+      update hbdx_symx mx set mx.hbjjze=#hbjjze# where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <!-- 更新收益明细表中的收益总额、红包币、报单积分字段-->
+    <entry key="update.symx.syze.with">
+       update hbdx_symx mx set mx.withdrawal=#withdrawal#,mx.redcoins=#redcoins#,mx.entrypoins=#entrypoins#,mx.ketimoney=#ketimoney# where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <!-- 查询收益明细表中的收益总额、红包币、报单积分字段 -->
+    <entry key="select.symx.withdrawal">
+       select mx.withdrawal from hbdx_symx mx where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <entry key="select.symx.redcoins">
+       select mx.redcoins from hbdx_symx mx where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <entry key="select.symx.entrypoins">
+       select mx.entrypoins from hbdx_symx mx where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    
+    <!-- 更新收益总额字段 -->
+    <entry key="update.symx.syze">
+       update hbdx_symx mx set mx.withdrawal=#withdrawal# where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <!-- 查询红包基金总额 -->
+    <entry key="select.mx.hbjjze">
+      select mx.hbjjze from hbdx_symx mx where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <!-- 更新红包中的起始日期和结束日期 -->
+    <entry key="update.hb.qsjsrq">
+      update hbdx_hb hb set hb.czrq=#czrq#,hb.dqrq=#dqrq# where 1=1 {? and hb.yhdhfk=#yhdhfk#}
+    </entry>
+    <!-- 查询红包池中红包个数 -->
+    <entry key="select.redpool.count">
+      select hbc.hbnumber from hbdx_hbc hbc where 1=1 {? and hbc.hbcid=#hbcid#}
+    </entry>
+    <!-- 查询红包池中红包总金额 -->
+    <entry key="select.redpool.total">
+       select hbc.aggreate from hbdx_hbc hbc where 1=1 {? and hbc.hbcid=#hbcid#}
+    </entry>
+    
+</properties>

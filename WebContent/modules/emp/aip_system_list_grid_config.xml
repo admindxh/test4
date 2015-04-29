@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE unspecified PUBLIC "//UNKNOWN/" "unknown.dtd">
+<!-- 操作菜单模型 -->
+<columnModel>
+   
+   <oprationMenuModel>
+       <!-- 菜单容器的ID，可以根据该ID获取菜单容器的div -->
+       <container>app_manage_aip_system_list_opt_menu</container>
+       <!-- 操作列显示图标路径，路径为不包含contextPath的图片绝对路径 -->
+       <icon>/themes/default/from/ico_set.gif</icon>
+       <!-- 菜单容器div使用的样式类 -->
+       <sytleclass>dg_tools_menu</sytleclass>
+       <!-- 菜单项内容 -->
+       <menus>
+           <menuItem>
+             <!-- 菜单项容器ID，据此可以获得菜单项所在的li -->
+             <id>view_app_manage_aip_system_list</id>
+             <!-- 菜单项标题 -->
+             <label>查看</label>
+             <!-- 菜单项的图标 -->
+             <icon>/themes/default/from/ico_preview.gif</icon>
+             <!-- 点击菜单项出发的动作 -->
+             <action>viewEntity</action>
+           </menuItem>
+           <menuItem>
+             <!-- 菜单项容器ID，据此可以获得菜单项所在的li -->
+             <id>edit_app_manage_aip_system_list</id>
+             <!-- 菜单项标题 -->
+             <label>修改</label>
+             <!-- 菜单项的图标 -->
+             <icon>/themes/default/from/ico_edit.gif</icon>
+             <!-- 点击菜单项出发的动作 -->
+             <action>editEntity</action>
+           </menuItem>
+           <menuItem>
+             <!-- 菜单项容器ID，据此可以获得菜单项所在的li -->
+             <id>del_app_manage_aip_system_list</id>
+             <!-- 菜单项标题 -->
+             <label>删除</label>
+             <!-- 菜单项的图标 -->
+             <icon>/themes/default/from/ico_del.gif</icon>
+             <!-- 点击菜单项出发的动作 -->
+             <action>delEntity</action>
+           </menuItem>
+       </menus>
+   </oprationMenuModel>
+</columnModel>

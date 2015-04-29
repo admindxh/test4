@@ -1,0 +1,46 @@
+/*========= 定义类 ===========*/
+.boxSizing(@var:border-box) {
+	-moz-box-sizing: @var;
+    -webkit-box-sizing: @var;
+    -o-box-sizing: @var;
+    -ms-box-sizing: @var;
+    box-sizing: @var;
+}
+
+.clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    visibility: hidden;
+	font-size: 0;
+	height: 0;
+	clear: both;
+  }
+}
+
+.fl(){
+	float:left;
+}
+
+.fr(){
+	float:right;
+}
+
+
+
+/*变量*/
+@topBgColor:#ea5858;
+@topColor:#fff;
+@borderColor:#bfbfbf;
+
+@tipsColor:#838383;
+@tipsColor1:#676767;
+
+@webRed:#f92a30;
+@webRed1:#eb6100;
+@webGreen:#45c01a;
+@webYellow:#f79307;
+@webBlue:#4e9de6;

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>使用KISS 框架的简单示例</comment>
+
+	<!--根据userId获取用户信息，包括用户组织信息-->
+	<entry key="user.get.userinfo">
+		SELECT SE.ID,
+		       SE.NAME,
+		       SE.TYPE,
+		       SE.LOGIN_ID,
+		       SE.PASSWORD,
+		       SE.EMAIL,
+		       SE.MOBILE_PHONE,
+		       SE.IM,
+		       SE.TELEPHONE,
+		       SE.SEX,
+		       SE.BIRTHDAY,
+		       SE.STATUS,
+		       SE.ORG_ID,
+		       CASE
+		         WHEN SE.TYPE = 'local' THEN
+		          '本地用户'
+		         ELSE
+		          'Portal用户'
+		       END AS TYPE_NAME,
+		       SO.NAME ORG_NAME
+		FROM   SEC_USER         SE,
+		       SEC_ORGANIZATION SO
+		WHERE  SE.ORG_ID = SO.ID
+		AND    SE.ID = ?
+	</entry>
+	
+	<!-- 用户账号检查（考虑新增用户时） -->
+	<entry key="user.checkAccount">
+			SELECT count(*) FROM SEC_USER UU WHERE UU.LOGIN_ID = ?
+	</entry>
+	
+	<!-- 用户账号检查 （考虑修改用户时）-->
+	<entry key="user.checkAccountForUpdate">
+	<![CDATA[
+		SELECT COUNT(*) FROM SEC_USER UU WHERE UU.LOGIN_ID = ? AND UU.ID <> ?
+	]]>
+	</entry>
+	
+	<!-- 用户角色信息列表 -->
+	<entry key="user.listUserRole">
+	<![CDATA[
+		SELECT SR.NAME        AS ROLE_NAME,
+			   SR.DESCRIPTION AS ROLE_DESCRIPTION,
+			   (CASE WHEN SR.TYPE=2 THEN '混合角色' WHEN SR.TYPE=1 THEN '流程角色' ELSE '功能角色' END) AS ROLE_TYPE,	
+			   SR.ID          AS ROLE_ID,
+			   SU.ID          AS MEMBER_ID,
+			   SR.ID          AS PK_ID
+		FROM   SEC_USER     SU,
+			   SEC_USER_ROLE SUR,
+			   SEC_ROLE     SR
+		WHERE  SUR.USER_ID = SU.ID
+		AND    SUR.ROLE_ID = SR.ID
+		{? AND SUR.USER_ID = #userId#}
+	]]>
+	</entry>
+</properties>

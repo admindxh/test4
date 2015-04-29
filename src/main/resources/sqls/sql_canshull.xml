@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+   <comment>红包系统参数维护相关的sql</comment>
+
+   <!-- 获取到所有有效的系统参数 -->
+   <entry key="csbll_list_key">
+    <![CDATA[
+        SELECT pc.llbh,
+		       pc.llfl,
+		       pc.szrq,
+		       pc.llbl,
+		       pc.status,
+		       pc.ztms,
+		       pc.usernum,
+		       (CASE WHEN pc.activate=1 THEN '启用' else '未启用' END) activate 
+		FROM  csb_ll  pc
+		where 1=1 
+		
+		{? AND pc.llbh = #llbh#}
+		{? AND pc.llfl = #llfl#}
+		{? AND pc.activate = #activate#}
+		 
+    ]]>
+    </entry>
+    
+    <!-- 使特定的配置激活-->
+	<entry key="profile.activateProfile">
+	<![CDATA[
+		UPDATE csb_ll pc
+		SET    pc.ACTIVATE = 1
+		WHERE  pc.llbh = ?
+	]]>
+	</entry>
+	
+	<!-- 获取到所有有效的用户系统参数 -->
+   <entry key="user_list_key">
+    <![CDATA[
+        SELECT cy.yhbh,
+		       cy.yhjb,
+		       cy.tcbl,
+		       cy.fzrs,
+		       (CASE WHEN cy.status=0 THEN 'VIP' else '普通用户' END) status ,
+		       
+		       cy.ztms
+		FROM   csb_yh  cy
+		where 1=1 
+		
+		{? AND cy.yhbh = #yhbh#}
+		
+		{? AND  cy.status IN ($status$)}
+		{? AND cy.yhjb = #yhjb#}
+    ]]>
+    </entry>
+    
+    <!--根据userId获取用户信息，包括用户组织信息-->
+	
+    
+    <!-- 用户激活码检查（考虑新增用户时） -->
+	<entry key="user.checkJHM">
+	   SELECT COUNT(*) FROM yhdx_dl  where dljhm=?  
+	</entry>
+
+    <!-- 检查用户名输入的唯一性（考虑新增用户时） -->
+    <entry key="user.username.check">
+      select count(*) from hbdx_user where username=?
+    </entry>
+	<!-- 用户激活码检查 （考虑修改用户时）-->
+	<entry key="user.updateCheckJHM">
+	<![CDATA[
+		SELECT COUNT(*) FROM hbdx_user huser  left join yhdx_dl dl on dl.dldxbh=huser.dldxbhfk 
+		WHERE huser.yhdxdh = ? AND huser.userjhm <> ? 
+	]]>
+	</entry>
+	<!-- 用户名检查 （考虑修改用户时）-->
+	<entry key="user.updateCheckUsername">
+	<![CDATA[
+		SELECT COUNT(*) FROM hbdx_user huser  WHERE 1=1 AND huser.username <> ? 
+	]]>
+	</entry>
+	
+	<entry key="user.userinfo">
+	   SELECT     hbuser.yhdxdh,
+                   yd.dldxbh,
+                   yd.dljhm,
+                   yd.tgslj,
+                   hbuser.username,
+                   hbuser.userjhm,
+		          
+		           hbuser.crje,
+		           hbuser.hbgs,
+		           hbuser.everyoneTotal,
+		           (hbuser.aggreatMount+hbuser.crje) as aggreatMount,
+                           lv.status,
+		           hbuser.userphnoe,
+                           lv.llfl as yhjb,
+	           	   hbuser. email
+	          
+	    
+	    FROM hbdx_user hbuser
+
+            left join yhdx_dl yd on yd.dldxbh=hbuser.dldxbhfk
+            LEFT JOIN csb_ll lv on lv.llbh=hbllfk
+	    where 1=1
+	     {? AND yd.dljhm = #dljhm#}
+	     {? AND hbuser.yhdxdh = #yhdxdh#}
+	     {? and hbuser.userphnoe=#userphnoe#}
+		 {? and lv.activate=#activate#}
+         {? AND USERNAME LIKE CONCAT(CONCAT('%',#USERNAME#),'%') ESCAPE '/'}
+	</entry>
+	
+	
+	<!-- 代理商收益明细查询 -->
+	<entry key="list.user.daili">
+	    SELECT     hbuser.yhdxdh,
+                   hbuser.username,
+                   hbuser.crje,
+                   hbuser.crje*(select llbl from csb_ll where llfl='收益利率')*0.7 as rsy,
+                   hbuser.crje*(select llbl from csb_ll where llfl='收益利率')*0.3 as hbjj,
+                   lv.status,
+		           hbuser.userphnoe,
+                   lv.llfl as yhjb,
+                   (hbuser.aggreatMount+hbuser.crje) as aggreatMount,
+                   mx.qsrq,mx.jsrq
+              FROM hbdx_user hbuser
+            left join yhdx_dl yd on yd.dldxbh=hbuser.dldxbhfk
+            left join hbdx_symx mx on mx.yhdxdhfk=hbuser.yhdxdh
+            LEFT JOIN csb_ll lv on lv.llbh=hbllfk
+	    where 1=1 and hbuser.usernum='0'
+	     {? AND hbuser.yhdxdh = #yhdxdh#}
+	     {? and hbuser.userphnoe=#userphnoe#}
+		 {? and lv.activate=#activate#}
+         {? AND USERNAME LIKE CONCAT(CONCAT('%',#USERNAME#),'%') ESCAPE '/'}
+	</entry>
+	
+	<!-- 代理用户信息 -->
+	<entry key="daili.userinfo">
+	   SELECT DL.dldxbh,
+	          DL.dljhm,
+	          DL.tgslj,
+	          (CASE 
+	          WHEN  statues='1' THEN '已激活' ELSE '未激活' END) statues ,
+	          DL.notes1 
+	   
+	       FROM yhdx_dl DL left JOIN hbdx_user HBUSER ON HBUSER.dldxbhfk =DL.DLDXBH
+	       WHERE 1=1
+	       
+	       {? AND DL.DLDXBH=#DLDXBH#}
+	       {? AND DL.dljhm=#DLJHM#}
+	       {? AND DL.STATUES=#STATUES#}
+	</entry>
+	
+	<!-- 保存后更新激活码状态 -->
+	<entry key="user.savecheck">
+	   UPDATE yhdx_dl
+                  SET statues = '1' where 1=1 
+                  {? AND dljhm=#dljhm#}
+                  {? AND DLDXBH=#DLDXBH#}
+	</entry>
+	
+	<!-- 根据代理激活码查询代理用户ID -->
+	<entry key="list.dldxbh">
+	   select  dldxbh from yhdx_dl where 1=1
+	   {? AND dljhm=#dljhm#}
+	</entry>
+	
+	<!-- ID传值 -->
+	<entry key="list.dldxfk">
+	   update hbdx_user  hbuser set
+	    hbuser.dldxbhfk=#dldxbhfk#,
+	    hbuser.tgslj=#tgslj#
+	     where 1=1 
+	   
+	   {? AND hbuser.userjhm = #userjhm#}
+	</entry>
+	
+	<!-- 查询代理推广式连接 -->
+	<entry key="select.tgslj">
+	  select dl.tgslj from yhdx_dl dl where 1=1{? AND dl.dljhm = #dljhm#}
+	</entry>
+	<!-- 更新当前用户编号 -->
+	<entry key="update.usernum">
+	  update hbdx_user  hbuser set hbuser.usernum=#usernum# where 1=1 {? AND hbuser.yhdxdh=#yhdxdh#}
+	</entry>
+	
+	<!-- 根据用户激活码查询当前用户的ID -->
+	<entry key="select_yhdxdh">
+	  select hbuser.yhdxdh from hbdx_user  hbuser where 1=1 {? AND hbuser.userjhm=#userjhm#}
+	</entry>
+	<!-- 查询利率分类名称 -->
+	<entry key="select.lilv">
+	  select llfl from hbdx_user where yhdhfk=?
+	</entry>
+	
+	<!-- 判断用户是否存在 -->
+	<entry key="select.username.number1">
+	   select count(1) from hbdx_user hbuser where 1=1 {? and hbuser.userphone=#userphone#}
+	</entry>
+	<!-- 根据用户名查询用户ID -->
+	<entry key="select.username.number2">
+	   select hbuser.yhdxdh from hbdx_user hbuser where 1=1 {? and hbuser.username=#username#}
+	</entry>
+	<!-- 根据ID查密码 -->
+	<entry key="select.password.number3">
+	   select users.password from hbdx_user users where 1=1 {? and users.yhdxdh=#yhdxdh#}
+	</entry>
+	<!-- 查询用户的日收益金额 -->
+	<entry key="select.everyday">
+	   select users.crje*(select llbl from csb_ll where llfl='收益利率')*0.7 from hbdx_user users where 1=1 {? and users.yhdxdh=#yhdxdh#}
+	</entry>
+	<!-- 查询代理商下线用户人数 -->
+	<entry key="select.count.users">
+	  select count(*) from hbdx_user users where 1=1 {? and users.parentid=#parentid#}
+	</entry>
+	<!-- 查询下线用户的利率 -->
+	<entry key="select.user.daili.lilv">
+	   select  lv.llbl  from csb_ll lv where 1=1 {? and lv.usernum=#usernum#}
+	</entry>
+</properties>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>使用KISS 框架的简单示例</comment>
+<!--列出特定角色的功能操作-->
+	<entry key="menu.treeList">
+	<![CDATA[
+		SELECT P.MENU_ID AS ID,
+           P.NAME AS TEXT,
+           P.PARENT_ID as PARENT_ID,
+           'true' AS SHOW_CHECK,
+           'true' AS IS_EXPAND,
+           (CASE
+             WHEN (SELECT COUNT(*)
+                   FROM   SEC_MENU_Permission RP
+                   WHERE  RP.OPERATION_ID = P.MENU_ID
+                   {? AND RP.ROLE_ID = #roleId#}
+		               ) = 0
+		          THEN
+		          '0'
+		         ELSE
+		          '1'
+		       END) AS CHECKSTATE
+    	FROM   aip_portal_menu P
+    	where p.status = 'enabled'
+	]]>
+	</entry>
+	
+	<entry key="role.function.selectedRoleRuleList.menu">
+	<![CDATA[
+		SELECT OPERATION_ID OPERATION,
+		       NVL(RULE_ID, '') AS RULEID
+		FROM   SEC_MENU_Permission
+		 	WHERE OPERATION_ID IN (
+          	SELECT SP.MENU_ID FROM AIP_PORTAL_MENU SP
+   		) 	AND ROLE_ID = ?
+	]]>
+	</entry>
+</properties>

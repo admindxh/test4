@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>日志Sql语句</comment>
+	<!--日志列表查询-->
+	<entry key="log.listSecLog">
+		<![CDATA[
+			SELECT ID,
+			       CASE LOG_TYPE WHEN 'login' THEN '登录日志' WHEN 'operation' THEN '操作日志' ELSE '授权日志' END LOG_TYPE,
+			       USER_ID,
+			       USER_NAME,
+			       OPERATION_NAME,
+			       OPERATION_TIME,
+			       DESCRIPTION
+			FROM   SEC_LOG
+			WHERE 1 = 1
+				  {? AND LOG_TYPE IN ($LOG_TYPE$)}
+				  {? AND OPERATION_NAME LIKE CONCAT(CONCAT('%',#OPERATION_NAME#),'%') ESCAPE '/'}
+				  {? AND USER_NAME LIKE CONCAT(CONCAT('%',#USER_NAME#),'%') ESCAPE '/'}
+				  {? AND OPERATION_TIME >= STR_TO_DATE(#BEGIN_TIME#,'%Y-%m-%d')}
+				  {? AND OPERATION_TIME <= STR_TO_DATE(CONCAT(#END_TIME#,'23:59:59'),'%Y-%m-%d %H:%i:%s')}
+		    ORDER BY OPERATION_TIME DESC
+		]]>
+	</entry>
+</properties>

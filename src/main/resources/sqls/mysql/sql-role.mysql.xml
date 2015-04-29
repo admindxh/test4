@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>角色相关</comment>
+	
+	<!-- 按名字模糊查询用户,只返回前两百个 -->
+	<entry key="role.selectChildRoles">
+	<![CDATA[
+		SELECT SE.ID,
+       		   SE.NAME AS NAME
+		FROM   SEC_ROLE SE
+		WHERE  SE.ID <> #PARENT_ROLE#
+		ORDER  BY SE.NAME
+	]]> 
+	</entry>
+</properties>

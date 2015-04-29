@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>用户相关sql</comment>
+	
+	<!-- 用户信息列表  -->
+	<entry key="user.user_list">
+	<![CDATA[
+		SELECT UU.ID,
+			UU.ID AS PK_ID,
+			UU.LOGIN_ID,
+			UU.NAME,         
+			(CASE WHEN UU.STATUS = 'enabled' THEN '已启用' WHEN UU.STATUS = 'disabled' THEN '已停用' END) AS STATUS,
+			(CASE WHEN UU.TYPE = 'local' THEN '本地账号' WHEN UU.TYPE = 'portal' THEN 'PORTAL账号' END) AS TypeName,
+			UU.TYPE,
+			UU.EMAIL AS EMAIL,
+			UU.SEX,
+			UU.STATUS AS ACCOUNT_STATUS,
+			UU.MOBILE_PHONE,
+			UU.ORG_ID,
+			VO.NAME AS OrgName
+		  FROM SEC_USER UU
+		  LEFT JOIN V_SEC_VALID_ORG VO
+		  ON UU.ORG_ID = VO.ID
+		  WHERE 1=1
+		       @security{USER_MANAGE$QUERY_USER;And 1=1}
+			   {? AND UU.STATUS IN ($STATUS$)}
+			   {? AND uu.ORG_ID in (
+					  SELECT UO.ID
+					  FROM V_SEC_VALID_ORG UO
+					  START WITH UO.ID = #orgId#
+					  CONNECT BY PRIOR UO.ID = UO.PARENT)
+			   }
+			   {? AND UU.NAME LIKE CONCAT(CONCAT('%',#USER_NAME#),'%') ESCAPE '/' }
+			   {? AND UU.LOGIN_ID LIKE CONCAT(CONCAT('%',#ACCOUNT#),'%') ESCAPE '/' }
+			   {? AND UU.MOBILE_PHONE LIKE CONCAT(CONCAT('%',#MOBILE#),'%') ESCAPE '/' }
+	]]>
+	</entry>
+	
+	<!-- 按名字模糊查询用户,只返回前两百个 -->
+	<entry key="user.selectUserRole">
+	<![CDATA[
+		SELECT *
+		FROM   (SELECT SR.ID,
+					   SR.NAME||DECODE(SR.TYPE, 2, '【混合角色】', 1, '【流程角色】', '【功能角色】') AS NAME
+				FROM   SEC_ROLE SR
+				MINUS
+				SELECT SU.ROLE_ID AS ID,
+					   SR.NAME||DECODE(SR.TYPE, 2, '【混合角色】', 1, '【流程角色】', '【功能角色】') AS NAME
+				FROM   SEC_USER_ROLE SU,
+					   SEC_ROLE     SR
+				WHERE  SU.ROLE_ID = SR.ID
+				{? AND SU.USER_ID = #userId#}
+				)
+		WHERE  ROWNUM <= 200
+			   {? AND NAME LIKE CONCAT(CONCAT('%',#name#),'%') ESCAPE '/'}
+		ORDER  BY NAME
+	]]>
+	</entry>
+</properties>

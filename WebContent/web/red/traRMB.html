@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+    <title ng-bind="title">红包提现</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+
+    <link rel="stylesheet" href="res/css/common.css" />
+    <link rel="stylesheet" href="res/css/packet.css" />
+
+	<script src="res/js/zepto.js"></script>
+</head>
+<body>
+    <!-- header -->
+	<div class="nav">
+		<i class="ico-arr"></i>
+		<span class="nav-tit">红包提现</span>
+	</div>
+
+	
+	<div class="container transfer-info mt20">
+		<p><span>银行：xxxxxxxxxxxxx</span><span style="float:right;">尾号:1234</span></p>
+	</div>
+	<div class="container transfer-info">
+		<p><span>姓名：张三</span><span style="float:right;">支行:xxxxxxxxx</span></p>
+	</div>
+	<div class="container transfer-info" id="inputPad">
+		<div class="clearfix">
+			<span>余额：6400元</span>
+			<div class="num-cover" style="width:50%;">
+				<span>提现</span>
+				<input type="number" id="num" class="num bob" value="12" >
+				<span>元</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="container mt20">
+		<a href="#" class="btn red-btn1">提交</a>
+	</div>
+	
+</body>
+</html>

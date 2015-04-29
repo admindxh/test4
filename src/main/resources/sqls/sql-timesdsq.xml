@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>定时器配置</comment>
+    <!-- 获取系统当前日期 -->
+    <entry key="now.date">
+       SELECT TO_CHAR(SYSDATE, 'yyyymmddHHMI') FROM DUAL
+    </entry>
+    <!-- 更新收益明细表中的结束日期字段 -->
+    <entry key="update.symx.jsrq">
+       update hbdx_symx mx set mx.jsrq=#jsrq# 
+    </entry>
+    <!-- 查询每日分红 -->
+    <entry key="select.everyday.sy">
+       select  hbuser.crje*(select llbl from csb_ll where llfl='收益利率') from hbdx_user hbuser where 1=1  {? and hbuser.status=#status#}
+    </entry>
+    <!-- 查询用户id -->
+    <entry key="select.times.userid">
+      select distinct yhdxdh from hbdx_user where 1=1
+    </entry>
+    <!-- 查询每天红利 -->
+    <entry key="select.everyday.hl.time">
+      select  hbuser.crje*(select llbl from csb_ll where llfl='收益利率') from hbdx_user hbuser left join hbdx_hb hb on hbuser.yhdxdh=hb.yhdhfk where 1=1  {? and hbuser.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 更新每日的红利 -->
+    <entry key="update.everyday.hongli">
+       update hbdx_user users set everydayhl=#everydayhl#,status=#status# where 1=1 {? AND users.yhdxdh=#yhdxdh#}
+    </entry>
+    <!-- 查询父级id为空的所有用户 -->
+    <entry key="select.id.null">
+       select yhdxdh from hbdx_user where parentid is null
+    </entry>
+    <!-- 每天更新红包表中的到期日期 -->
+    <entry key="update.hb.dqrq">
+      update hbdx_hb hb set hb.dqrq=#dqrq#
+    </entry>
+</properties>

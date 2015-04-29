@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>兼容mysql的sql</comment>
+	<!-- 获取下级子节点 -->
+	<entry key="function.tree">
+	<![CDATA[
+		SELECT SP1.ID AS ID,
+			   SP1.NAME AS TEXT,
+			   (CASE
+				 WHEN SP1.TYPE = 'Module' THEN
+				  '~/statics/images/icon_module.gif'
+				 WHEN SP1.TYPE = 'Page' THEN
+				  '~/statics/images/icon_page.gif'
+				 WHEN SP1.TYPE = 'Element' THEN
+				  '~/statics/images/icon_element.gif'
+			   END) AS ICON,
+			   SP1.TYPE AS TYPE,
+			   NVL(SP1.PARENT,'root') AS PARENT_ID,
+			   NVL(SP2.NAME,'应用功能') AS PARENT_NAME
+		FROM   SEC_PERMISSION SP1
+		LEFT   JOIN SEC_PERMISSION SP2
+		ON     SP1.PARENT = SP2.ID
+		ORDER BY SP1."ORDER"
+	]]>
+	</entry>
+</properties>

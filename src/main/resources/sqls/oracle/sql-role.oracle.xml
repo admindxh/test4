@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>角色相关</comment>
+	
+	<!-- 按名字模糊查询用户,只返回前两百个 -->
+	<entry key="role.selectChildRoles">
+	<![CDATA[
+		SELECT SE.ID,
+       		   SE.NAME AS NAME
+		FROM   SEC_ROLE SE
+		WHERE  SE.ID <> #PARENT_ROLE#
+		AND    SE.ID NOT IN (
+		                     --不在继承链的父节点中
+		                     SELECT SR.PARENT_ROLE_ID
+		                     FROM   SEC_ROLE_INHERITANCE SR
+		                     START  WITH SR.CHILD_ROLE_ID = #PARENT_ROLE#
+		                     CONNECT BY SR.CHILD_ROLE_ID = PRIOR SR.PARENT_ROLE_ID)
+		AND    SE.ID NOT IN (
+		                     --不在继承链的子节点中
+		                     SELECT SR.CHILD_ROLE_ID
+		                     FROM   SEC_ROLE_INHERITANCE SR
+		                     START  WITH SR.PARENT_ROLE_ID = #PARENT_ROLE#
+		                     CONNECT BY PRIOR SR.CHILD_ROLE_ID = SR.PARENT_ROLE_ID)
+		      {?AND NAME LIKE CONCAT(CONCAT('%',#name#),'%') ESCAPE '/'}
+		AND    ROWNUM <= 200
+		ORDER  BY SE.NAME
+	]]> 
+	</entry>
+</properties>

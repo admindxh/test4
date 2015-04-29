@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>组织相关sql</comment>
+
+	<!--组织机构查询列表-->
+	<entry key="organization.organization_list">
+	<![CDATA[
+		 SELECT SO.ID,
+			   SO.NAME,
+			   SOO.NAME PARENT_NAME,
+			   SO.PARENT,
+			   SO.STATUS,
+			   CASE SO.STATUS WHEN 'disabled' THEN '已停用' ELSE '已启用' END STATUS_NAME
+		FROM   SEC_ORGANIZATION SO
+		LEFT OUTER JOIN SEC_ORGANIZATION SOO
+		ON  SO.PARENT = SOO.ID
+		WHERE 1=1
+		@security{ORGANIZATION_MANAGE$QUERY;AND 1=1}
+		{? AND    SO.NAME LIKE CONCAT(CONCAT('%',#org_name#),'%') ESCAPE '/' }
+		{? AND    SO.STATUS IN ($org_status$)}
+		{? AND    SO.ID IN (SELECT O2.ID
+							 FROM   SEC_ORGANIZATION O1, SEC_ORGANIZATION O2
+							 WHERE O1.ID = O2.PARENT
+							 AND (O1.ID = #parent# OR O1.PARENT = #parent#)) }
+	]]>
+	</entry>
+
+	<!--获取第一层组织机构-->
+	<entry key="organization.edit.tree">
+	<![CDATA[
+		SELECT SO.ID, 
+	       IFNULL(SO.NAME,'组织根节点') AS TEXT,
+	       IFNULL(SO.PARENT,'root') AS PARENT_ID,
+	       CASE (SELECT COUNT(*) FROM SEC_ORGANIZATION WHERE PARENT = SO.ID) WHEN 0 THEN '0' ELSE '1' END AS LEAF,
+	       '根组织机构' AS PARENT_NAME,
+	       SO.STATUS
+	    FROM SEC_ORGANIZATION SO
+	    WHERE 1=1
+	    @security{ORGANIZATION_MANAGE$QUERY;AND 1=1}
+	    ORDER BY SO.`ORDER`
+	]]>
+	</entry>
+	
+	<!--获取子节点组织机构-->
+	<entry key="organization.edit.tree.children">
+	<![CDATA[
+		SELECT SO.ID AS ID, 
+		       SO.NAME AS TEXT, 
+		       SO.PARENT AS PARENT_ID,
+		       (CASE WHEN (SELECT COUNT(*) FROM V_SEC_VALID_ORG WHERE PARENT = SO.ID) = 0 THEN '0' ELSE '1' END) AS LEAF,
+		       SOP.NAME PARENT_NAME,
+		       SO.STATUS
+		FROM SEC_ORGANIZATION SO
+	        LEFT OUTER JOIN SEC_ORGANIZATION SOP
+		ON   SO.PARENT = SOP.ID
+		WHERE 1 = 1
+	              {? AND SO.PARENT = #parentId#}
+		      @security{ORGANIZATION_MANAGE$QUERY;AND 1=1}
+		ORDER BY SO.`ORDER`
+	]]>
+	</entry>
+	
+	<!--获取第一层组织机构-->
+	<entry key="organization.tree">
+	<![CDATA[
+		SELECT SO.ID, 
+	       IFNULL(SO.NAME,'组织根节点') AS TEXT,
+	       IFNULL(SO.PARENT,'root') AS PARENT_ID,
+	       CASE (SELECT COUNT(*) FROM SEC_ORGANIZATION WHERE PARENT = SO.ID) WHEN 0 THEN '0' ELSE '1' END AS LEAF
+	    FROM V_SEC_VALID_ORG SO
+	    WHERE 1=1
+	    @security{ORGANIZATION_MANAGE$QUERY;AND 1=1}
+	    ORDER BY SO.`ORDER`
+	]]>
+	</entry>
+	
+	<!--获取子节点组织机构-->
+	<entry key="organization.tree.children">
+	<![CDATA[
+		SELECT UU.ID AS ID, 
+			   UU.NAME AS TEXT, 
+			   UU.PARENT AS PARENT_ID,
+			   (CASE WHEN (SELECT COUNT(*) FROM V_SEC_VALID_ORG WHERE PARENT = UU.ID) = 0 THEN '0' ELSE '1' END) AS LEAF
+		FROM V_SEC_VALID_ORG UU
+		WHERE 1 = 1
+			  {? AND UU.PARENT = #parentId#}
+			  @security{ORGANIZATION_MANAGE$QUERY;AND 1=1}
+		ORDER BY UU.`ORDER`
+	]]>
+	</entry>
+</properties>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>使用KISS 框架的简单示例</comment>
+	<!-- 角色列表 -->
+	<entry key="role.listRole">
+		<![CDATA[
+		SELECT ID,
+		       NAME,
+		       DESCRIPTION,
+		       (CASE S.TYPE WHEN 2 THEN '混合角色' WHEN 1 THEN '流程角色' ELSE '功能角色' END) TYPE,
+		       CREATED_BY,
+		       CREATED_DATE,
+		       LAST_UPDATED_BY,
+		       LAST_UPDATED_DATE
+		  FROM SEC_ROLE S
+		WHERE 1=1
+		@security{ROLE_MANAGE$QUERY_ROLE;And 1=1}
+		{? AND NAME LIKE CONCAT(CONCAT('%',#name#),'%') ESCAPE '/'}
+		{? AND TYPE = #type#}
+		]]>
+	</entry>
+	
+	<!-- 判断角色名称是否存在 -->
+	<entry key="role.existRoleByRoleName">
+		<![CDATA[
+			SELECT COUNT(*) FROM SEC_ROLE WHERE NAME = ? 
+		]]>
+	</entry>
+	
+	<!-- 判断角色名称是否存在（检查修改时） -->
+	<entry key="role.existRoleByRoleNameForEdit">
+		<![CDATA[
+			SELECT COUNT(*) FROM SEC_ROLE WHERE NAME = ? AND ID <> ?
+		]]>
+	</entry>
+	
+	<!-- 列举角色对应的用户-->
+	<entry key="role.listRoleUser">
+		<![CDATA[
+			SELECT SU.ID USER_ID,
+		           SU.NAME USER_NAME,
+		             SU.LOGIN_ID,
+		             CASE WHEN SU.TYPE='local' THEN '本地用户' ELSE 'Portal用户' END TYPE_NAME,
+		             SO.NAME ORG_NAME,
+		             CASE WHEN SU.STATUS='enabled' THEN '已启用' ELSE '已停用' END STATUS
+		      FROM   SEC_USER_ROLE     SUR,
+		             SEC_USER         SU,
+		             SEC_ORGANIZATION SO
+		      WHERE  SUR.USER_ID = SU.ID
+		      AND    SU.ORG_ID = SO.ID
+		      AND    SUR.ROLE_ID = #RoleId#
+		      {? AND SU.LOGIN_ID LIKE CONCAT(CONCAT('%',#LoginId#),'%') ESCAPE '/'}
+		      {? AND SU.NAME LIKE CONCAT(CONCAT('%',#Name#),'%') ESCAPE '/'}
+		]]>
+	</entry>
+	
+	<!-- 分配用户信息列表-->
+	<entry key="role.userSelect.user_list">
+		<![CDATA[
+			SELECT SU.ID,
+			       SU.NAME,
+			       SO.NAME        AS DEP,
+			       SU.MOBILE_PHONE AS MOBILE,
+			       SU.LOGIN_ID
+			FROM   SEC_USER         SU,
+			       SEC_ORGANIZATION SO
+			WHERE  SU.ORG_ID = SO.ID
+			AND    SU.ID NOT IN (SELECT SUR.USER_ID
+			                     FROM   SEC_USER_ROLE SUR
+			                     WHERE  SUR.ROLE_ID = #ROLE_ID#)
+			{? AND SO.PATH LIKE CONCAT(CONCAT('%',#ORG_ID#),'%') ESCAPE '/'}
+			{? AND SU.NAME LIKE CONCAT(CONCAT('%',#NAME#),'%') ESCAPE '/'}
+			{? AND SU.LOGIN_ID LIKE CONCAT(CONCAT('%',#LOGIN_ID#),'%') ESCAPE '/'}
+			{? AND SO.NAME LIKE CONCAT(CONCAT('%',#DEP#),'%') ESCAPE '/'}
+		]]>
+	</entry>
+	
+	<!-- 角色继承信息列表 -->
+	<entry key="role.listRoleInheritance">
+		<![CDATA[
+			SELECT SRI.CHILD_ROLE_ID  ROLE_ID,
+		           SR.NAME          ROLE_NAME,
+		           SR.DESCRIPTION,
+		           SRI.PARENT_ROLE_ID PARENT_ROLE
+		    FROM   SEC_ROLE_INHERITANCE SRI,
+		           SEC_ROLE            SR
+		    WHERE  SRI.CHILD_ROLE_ID = SR.ID
+		    AND    SRI.PARENT_ROLE_ID = #ROLE_ID#
+		]]>
+	</entry>
+	
+	<!--列出特定角色的功能操作-->
+	<entry key="role.function.treeList">
+	<![CDATA[
+		SELECT P.ID AS ID,
+		       P.NAME AS TEXT,
+		       P.PARENT PARENT_ID,
+		       (CASE
+		         WHEN P.TYPE = 'Module' THEN
+		          '~/statics/images/icon_module.gif'
+		         WHEN P.TYPE = 'Page' THEN
+		          '~/statics/images/icon_page.gif'
+		         WHEN P.TYPE = 'Element' THEN
+		          '~/statics/images/icon_element.gif'
+		       END) AS ICON,
+		       (CASE
+		         WHEN P.TYPE = 'Module' THEN
+		          '~/statics/images/icon_module.gif'
+		         WHEN P.TYPE = 'Page' THEN
+		          '~/statics/images/icon_page.gif'
+		         WHEN P.TYPE = 'Element' THEN
+		          '~/statics/images/icon_element.gif'
+		       END) AS REF_ICON,
+		       P.TYPE AS TYPE,
+		       'true' AS SHOW_CHECK,
+		       'true' AS IS_EXPAND,
+		       (CASE
+		         WHEN (SELECT COUNT(*)
+		               FROM   SEC_Role_Permission RP
+		               WHERE  RP.OPERATION_ID = P.ID
+		               {? AND RP.ROLE_ID = #roleId#}
+		               ) = 0
+		         
+		          THEN
+		          '0'
+		         ELSE
+		          '1'
+		       END) AS CHECKSTATE
+		FROM   SEC_PERMISSION P
+	]]>
+	</entry>
+	
+	<!--列出特定角色的操作规则-->
+	<entry key="role.function.selectedRoleRuleList.operation">
+	<![CDATA[
+		SELECT OPERATION_ID OPERATION,
+		       CASE WHEN RULE_ID IS NULL THEN '' ELSE RULE_ID END AS RULEID
+		FROM   SEC_Role_Permission
+		 WHERE OPERATION_ID IN (
+          SELECT SP.ID FROM SEC_PERMISSION SP
+   		) AND ROLE_ID = ?
+	]]>
+	</entry>
+	
+	<!--列出特定所有的功能操作规则-->
+	<entry key="role.function.selectedOperationRuleList">
+	<![CDATA[
+		SELECT ID,
+		       OPERATION_ID OPERATION,
+		       NAME,
+		       PRIORITY,
+		       RULE,
+		       BEHAVIOUR
+		FROM   SEC_Permission_Rule
+		WHERE  OPERATION_ID = ?
+		ORDER  BY PRIORITY
+	]]>
+	</entry>
+</properties>
