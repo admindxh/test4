@@ -7,8 +7,8 @@
 	
 	<entry key="jdbc.driverClassName">oracle.jdbc.driver.OracleDriver</entry>
 	<entry key="jdbc.url">jdbc:oracle:thin:@localhost:1521:orcl</entry>
-	<entry key="jdbc.username">runny</entry>
-	<entry key="jdbc.password">123</entry>
+	<entry key="jdbc.username">system</entry>
+	<entry key="jdbc.password">orcl</entry>
 	<entry key="jdbc.initialSize">2</entry>
 	<entry key="jdbc.maxActive">5</entry>
 	<entry key="jdbc.maxIdle">5</entry>
