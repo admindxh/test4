@@ -62,7 +62,7 @@
 									</td>
 									<td class="toolbar-btns" rowspan="3">
 										<button type="button" class="btn" onclick="user_grid.doSearch();">查询</button>
-										<button type="button" class="btn"/ onclick="document.forms['queryForm'].reset();">重置</button>
+										<button type="button" class="btn" onclick="document.forms['queryForm'].reset();">重置</button>
 									</td>
 								</tr>
 								<tr class="toggle-content2" style="display:none">

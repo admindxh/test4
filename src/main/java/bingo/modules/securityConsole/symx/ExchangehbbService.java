@@ -9,8 +9,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.swing.JOptionPane;
 
+import org.lightframework.mvc.HTTP.Session;
 import org.lightframework.mvc.Result;
 import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.stereotype.Controller;
@@ -49,6 +51,25 @@ public class ExchangehbbService extends BaseService{
 	 */
 	public void setSecLogService(SecLogService secLogService) {
 		this.secLogService = secLogService;
+	}
+	/**
+	 * 根据用户电话号码查询用户id
+	 * @param userphnoe
+	 * @return
+	 */
+	public boolean validateUser(String userphnoe,String password){
+		if(StringUtils.isEmpty(userphnoe)){
+			return false;
+		}else {
+			String pass=dao.queryForString("select.password.userphnoe", userphnoe);
+			if(StringUtils.isNotEmpty(pass)){
+				if(pass.equals(password)){
+					return true;
+				}
+			}
+			return false;
+		}
+		
 	}
 	
 	public String getUserphone(String yhdxdh){
@@ -759,12 +780,6 @@ public class ExchangehbbService extends BaseService{
 			}
 		}
 		
-		
-		
-		
-		
-		
-		
 		/*int day=dao.queryForInt("list.date", params);//查询截止当前时间是几天
 		double sum=dao.queryForDouble("select.everyday.sy", params);//每日红利
 		
@@ -778,33 +793,13 @@ public class ExchangehbbService extends BaseService{
 		}*/
 		
 	}
-	/**
-	 * 用户登录方法
-	 * @param hbdXuser
-	 * @return
-	 */
+
+public String signIn(HttpServletRequest request, String userphnoe) {
+	// TODO Auto-generated method stub
+	Session session=new Session();
+	session.setAttribute("userphnoe", userphnoe);
+	return request.getParameter("userphnoe");
+}
 	
-	public void dosave(HBDXuser hbdXuser) {
-		
-		String userphnoe=hbdXuser.getUserphnoe();
-		String password=hbdXuser.getPassword();
-		Map<String, Object> params=new HashMap<String, Object>();
-		params.put("userphnoe", userphnoe);
-		Integer number=dao.queryForInt("select.username.number1", params);
-		
-		if (number>0){
-			String id=dao.queryForString("select.username.number2", params);
-			params.put("yhdxdh", id);
-			String passwords=dao.queryForString("select.password.number3", params);
-			if(passwords.equals(password)){
-				System.out.println(userphnoe);
-			}else {
-				JOptionPane.showMessageDialog(null, "用户名和密码不正确，请重新输入");
-				
-			}
-		}else {
-			JOptionPane.showMessageDialog(null, "该用户不存在，请重新输入");
-		}
-	}
 	
 }

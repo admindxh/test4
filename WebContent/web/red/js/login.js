@@ -1,19 +1,28 @@
 //不让该页面嵌入其他框架页面
 window.onload = function initForm(){//登录界面不嵌入到任何子页面
-	var loginName = getCookie('username');
+	var loginName = getCookie('userphnoe');
 	if(loginName && loginName != ''){
-		document.getElementById('username').value = loginName;
+		document.getElementById('userphnoe').value = loginName;
 	}
-}
+	
+	//初始化焦点
+	if(document.getElementById('userphnoe').value == ''){
+		document.getElementById('userphnoe').focus();
+	}else{
+		document.getElementById('password').focus();
+	}
+};
+
 //记录登录信息
 function saveLoginInfo(){
-	setCookie('username',document.getElementById('username').value,30);
+	
+	setCookie('userphnoe',document.getElementById('userphnoe').value,30);
 }
 
 function doSubmit(){
-	
 	saveLoginInfo();
 	document.forms[0].submit();
+	
 	return true;
 }
 
@@ -45,4 +54,54 @@ function getCookie(cookieName){//自定义函数
     if (end == -1)                    //防止最后没有加“;”冒号的情况
     return cookieString.substring(start);//返回cookie值
     return cookieString.substring(start, end);//返回cookie值
+}
+
+/**
+ * 用户注册
+ */
+  
+  function dosunmit(){
+	  alert(saveflag);
+	  if(saveflag==false){
+		  alert('电话号码无效，不能注册');
+		  return;
+	  }
+	  var userphnoe=document.getElementById("userphnoe").value;
+	  var password=document.getElementById("password").value;
+	  alert(1);
+	  var url='~/poral/doregister.do?userphnoe='+ userphnoe+'&password='+password;
+	  window.location.href=$.utils.parseUrl(url);
+  }
+
+/**
+ * 红包用户验证
+ */
+var saveflag=true;
+
+function checkphnoe(value){
+	var exists = null;
+	var yhdxdh="";
+	$.dataservice("spring:redbackService.checkphnoe", {
+				userphnoe : value,
+		        yhdxdh : yhdxdh
+			}, function(response) {
+				exists = response;
+			}, {
+				async : false
+			});
+	if (exists) {
+		saveflag=true;
+		return {
+			
+			isError : false,
+			errorInfo : "电话号码正确"
+		};
+	} else {
+		saveflag=false;
+		return {
+			
+			isError : true,
+			errorInfo : "电话号码无效"
+		};
+	}
 }

@@ -1,9 +1,19 @@
 package bingo.modules.securityConsole.webController;
 
+/**
+ * 前台页面调用controller类
+ */
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.util.StringUtil;
+import org.lightframework.mvc.HTTP.Request;
 import org.lightframework.mvc.Result;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import bingo.common.core.utils.StringUtils;
 import bingo.modules.securityConsole.redpackge.RedpackageService;
 import bingo.modules.securityConsole.symx.ExchangehbbService;
 import bingo.modules.securityConsole.yhdl.HBDXuser;
@@ -13,8 +23,6 @@ import bingo.modules.securityConsole.yhdl.HBDXuser;
 public class PoralController {
 	
 	private RedpackageService redpackageService;
-	
-	private ExchangehbbService exchangehbbService;
 	
 	public RedpackageService getRedpackageService() {
 		return redpackageService;
@@ -41,20 +49,51 @@ public class PoralController {
 	}
 
 	/**
+	 * 登陆用户登陆成功，跳转到派红包页面否则跳转到注册页面
 	 * 派红包
 	 * @param yhdxdh
 	 */
-	@RequestMapping(value="doQianghb")
-      public void doQianghb(String yhdxdh){
+	@RequestMapping(value = "/doQianghb")
+      public void doQianghb(String userphnoe,String password){
+		HBDXuser hbdXuser=new HBDXuser();
+		hbdXuser.setUserphnoe(userphnoe);
+		hbdXuser.setPassword(password);
 		
-		Result.setAttribute("hbdXuser", redpackageService.getQueryById(yhdxdh));
-		float y=this.doTotal();//抢到单个红包金额
-		Result.setAttribute("hbze", y);
-	    Result.forward("/web/red/toPacket.jsp");
+		if(StringUtils.isNotEmpty(userphnoe)){
+			boolean flag=redpackageService.dosave(hbdXuser);
+			if(flag==true){
+				String yhdxdh=redpackageService.validateid(userphnoe);
+				if(StringUtils.isNotEmpty(yhdxdh)){
+					Result.setAttribute("hbdXuser", redpackageService.getQueryById(yhdxdh));
+					float y=this.doTotal();//抢到单个红包金额
+					Result.setAttribute("hbze", y);
+				    Result.forward("/web/red/toPacket.jsp");
+				}
+				
+			}else {
+				Result.forward("/web/red/register.jsp");
+			}
+			
+		}else {
+			Result.forward("/web/red/register.jsp");
+		}
+		
 	}
       
+	/**
+	 * 用户注册（注册成功跳转到首页）
+	 * @param userphnoe
+	 * @param password
+	 */
+	  public void doregister(String userphnoe,String password){
+		  HBDXuser hbdXuser=new HBDXuser();
+		  hbdXuser.setUserphnoe(userphnoe);
+		  hbdXuser.setPassword(password);
+		  redpackageService.savereduser(hbdXuser);
+		  Result.forward("/web/red/login.jsp");
+	  }
       /**
-       * 抢红包
+       * 抢红包,群红包
        * @param yhdxdh
        */
       @RequestMapping(value="doqunfa")
@@ -66,34 +105,6 @@ public class PoralController {
   		
   	}
 
-      /**
-       * 下线用户注册
-       * @param yhdxdh
-       */
-      @RequestMapping(value="create")
-      public void createuser(String yhdxdh){
-  		
-  		Result.setAttribute("title", "创建下线用户");
-  		Result.setAttribute("hbdxuser",exchangehbbService.getYhdlById(yhdxdh));
-  		Result.forward("/web/red/index.html");
-  	}
-  	
-      /**
-  	 * 验证有没有介绍人
-  	 * @param yhdxdh
-  	 */
-  	public void createusers(String yhdxdh){
-        HBDXuser users=new HBDXuser();
-  		String id=users.getYhdxdh();
-  		System.out.println(id);
-  		String name=exchangehbbService.getUserphone(yhdxdh);
-  		System.out.println(name);
-  		if(name.equals("0")){
-  			name="暂无介绍人";
-  		}
-  		Result.setAttribute("title", "创建下线用户");
-  		Result.setAttribute("name",name );
-  		Result.setAttribute("hbdxuser",exchangehbbService.getYhdlById(yhdxdh));
-  		Result.forward("/web/red/index.jsp");
-  	}
+     
+    
 }

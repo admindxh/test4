@@ -21,8 +21,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 
-    <link rel="stylesheet" href="${basePath }/bingo-redpackage/web/red/res/css/common.css" />
-    <link rel="stylesheet" href="${basePath }/bingo-redpackage/web/red/res/css/packet.css" />
+    <link rel="stylesheet" href="${contextPath}/web/red/res/css/common.css" />
+    <link rel="stylesheet" href="${contextPath}/web/red/res/css/packet.css" />
 </head>
 
 
@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	<div class="packet-body">
     	<div class="to-packet">
-  			<img src="${basePath }/bingo-redpackage/web/red/res/images/bg-packet.jpg" alt="">
+  			<img src="${contextPath}/web/red/res/images/bg-packet.jpg" alt="">
     	</div>
        
     		<div class="to-packet">
@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					</div>
 
   					<div class="btn-cover">
-  						<a href="myRecieve.html" class="btn red-btn1">查看我的红包</a>
+  						<a href="${contextPath}/web/red/myRecieve.html" class="btn red-btn1">查看我的红包</a>
   					</div>
       		</div>
 			</div>

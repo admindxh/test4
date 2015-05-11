@@ -137,8 +137,8 @@
 			<!--logo start-->
 			<div class="header-menu">
 					<div class="pull-left">
-						<a href="#" id="logo">
-							logo
+						<a href="#" id="#">
+							<h2>Sitron moon 系统基础开发框架</h2>
 						</a>
 					</div>
 					<div class="pull-right  shortcut-container">
@@ -201,7 +201,7 @@
 		<!-- 脚部 start -->
 		<div id="footer">
 			<div class="copyright text-center">		
-				京ICP备050257128号 | 中国移动通信版权所有
+				京ICP备050257128号 | copy right2015-2017Sitron moon
 			</div>
 		</div> 
 		<!-- 脚部 end -->

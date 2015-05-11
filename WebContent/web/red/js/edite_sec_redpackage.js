@@ -21,22 +21,39 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
  * ajax异步请求  提交登陆
  */
 
-  function ajaxsubmit(){
-	  alert(1);
-	
-		//function 是后台请求成功的callback函数
-		 var valInfo = $.validation.validate("#SEC_USER_FOMR");
-			if (valInfo.isError)
-				
-
-			var user = $('#SEC_USER_FOMR').toJson();
-            
-			$.dataservice("spring:exchangehbbService.dosave", user, function(response) {
-						$.dialogReturnValue(true);
+  function ajaxs(){
+	  alert("进来了");
+	      $(document).ready($("#login").click(function() {     
+		        $.ajax({     
+		            //要用post方式      
+		            type: "Post",     
+		            //方法所在页面和方法名      
+		            url: "/registers",
+		            data:"{'userphnoe':'userphnoe','password':'123'}",
+		            contentType: "application/json; charset=utf-8",     
+		            dataType: "json",     
+		            success: function(data) {     
+		                //返回的数据用data.d获取内容      
+		                alert("成功"); 
+		                $.dialogReturnValue(true);
 						$(document).dialogClose();
-					});
-		 
+		            },     
+		            error: function(err) {  
+		            	alert("失败");
+		                alert(err);     
+		            }     
+		        });     
+		    
+		        //禁用按钮的提交      
+		        return false;     
+		    })
+		    );
+		       
   }
+  
+
+
+  
   
 /**
  * 普通红包
@@ -73,17 +90,41 @@ function doSavequnfa() {
 }
 
 /**
- * 派红包
+ * 派红包和抢红包
  * @return
  */
-function doQianghb(grid, rowData, keyData){
-	alert(1);
-	var url = '~/poral/doQianghb.do?yhdxdh='+keyData;
-	 $.open(url, 680, null, {}, function() {
-			if ($.dialogReturnValue()) {
-				grid.refresh();
-			}
-		});
+function doredhb(grid, rowData, keyData){
+	
+	/*alert("进来了");
+	  $(function() {     
+		    $("#btnphb").click(function() {     
+		        $.ajax({     
+		            //要用post方式      
+		            type: "Post",     
+		            //方法所在页面和方法名      
+		            url: "register.jsp/doQianghb",
+		            data:"{'yhdxdh':'123'}",
+		            contentType: "application/json; charset=utf-8",     
+		            dataType: "json",     
+		            success: function(data) {     
+		                //返回的数据用data.d获取内容      
+		                alert("成功"); 
+		                $.dialogReturnValue(true);
+						$(document).dialogClose();
+		            },     
+		            error: function(err) {  
+		            	alert("失败");
+		                alert(err);     
+		            }     
+		        });     
+		    
+		        //禁用按钮的提交      
+		        return false;     
+		    });     
+		});    */
+	var class = $("#text").attr("class");
+	var url = '~/exchage/registers.do?userphnoe='+keyData;
+	window.location.href=$.utils.parseUrl(url,keyData);
 	
 	 
 }
@@ -101,19 +142,19 @@ function modifyhbb(grid, rowData, keyData){
 	
 }*/
 
-/*//普通红包
+//普通红包
 function putongRedpackge(grid, rowData, keyData) {
 	//var url = '~/modules/hongbao/edit_sec_putong.jsp'
 	
-	var url='~/exchangehbb/doExchangehbb.do?yhdxdh='+ keyData;
-	
-	$.open(url, 680, 680, {}, function() {
+	var url='~/exchage/doputong.do?yhdxdh='+ keyData;
+	alert(1);
+	$.open(url, 680, null, {}, function() {
 				if ($.dialogReturnValue()) {
-					user_grid.refresh();
+					grid.refresh();
 				}
 			});
 }
-*/
+
 //抢红包
 function qunfaRedpackge(grid, rowData, keyData) {
 	//var url = '~/modules/hongbao/edit_sec_qunfa.jsp'

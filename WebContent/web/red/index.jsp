@@ -27,10 +27,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta content="black" name="apple-mobile-web-app-status-bar-style" />
 
-    <link rel="stylesheet" href="res/css/common.css" />
-    <link rel="stylesheet" href="res/css/packet.css" />
+    <link rel="stylesheet" href="${contextPath}/web/red/res/css/common.css" />
+    <link rel="stylesheet" href="${contextPath}/web/red/res/css/packet.css" />
 
-	<script src="res/js/zepto.js"></script>
+	<script src="${contextPath}/web/red/res/js/zepto.js"></script>
 </head>
   
  <body style="padding-bottom:20px;">
@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 
   <div class="index-banner">
-    <img src="res/images/bg-index.jpg" alt="分享到朋友圈，马上有特等收获！">
+    <img src="${contextPath}/web/red/res/images/bg-index.jpg" alt="分享到朋友圈，马上有特等收获！">
     <div class="tips">分享到朋友圈，马上有特等收获！</div>
   </div>
 
@@ -80,8 +80,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
 
   	<div class="container rows ac-btns  clearfix mt20">
-    	<div class="col-6 ac-btns-item"><a href="#" class="btn green-btn" onClick="doQianghb()">派红包</a></div>
-    	<div class="col-6 ac-btns-item"><a href="#" class="btn red-btn" onClick="qianghb()">抢红包</a></div>
+    	<div class="col-6 ac-btns-item"><a href="login.jsp" class="btn green-btn" id="btnphb" >派红包</a></div>
+    	<div class="col-6 ac-btns-item"><a href="login.jsp" class="btn red-btn" >抢红包</a></div>
 	</div>
 
   <div class="rows ico-info clearfix mt20">

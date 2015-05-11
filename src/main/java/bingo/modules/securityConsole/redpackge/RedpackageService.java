@@ -7,8 +7,10 @@ import java.util.UUID;
 import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
+
 import org.lightframework.mvc.Result;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
@@ -512,5 +514,74 @@ public class RedpackageService extends BaseService{
 		params.put("hbcid", id);
 		int number=dao.queryForInt("select.redpool.count", params);
 		return number;
+	}
+	
+	/**
+	 * 用户登录方法
+	 * @param hbdXuser
+	 * @return
+	 */
+	
+	public boolean dosave(HBDXuser hbdXuser) {
+		boolean users=false;
+		String userphnoe=hbdXuser.getUserphnoe();
+		String password=hbdXuser.getPassword();
+		hbdXuser.setPassword(SecurityContext.getProvider().encryptPassword(hbdXuser.getPassword()));
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userphnoe", userphnoe);
+		Integer number=dao.queryForInt("select.username.number1", params);
+		
+		if (number>0&&number<2){
+			String id=dao.queryForString("select.username.number2", params);
+			params.put("yhdxdh", id);
+			String passwords=dao.queryForString("select.password.number3", params);
+			
+			if(passwords.equals(password)){
+				return true;
+			}else {
+			//	JOptionPane.showMessageDialog(null, "用户名和密码不正确，请重新输入");
+				return users;
+			}
+		}else {
+			//JOptionPane.showMessageDialog(null, "该用户不存在，请重新输入");
+			return users;
+		}
+	}
+	
+	/**
+	 * 根据用户电话号码查询用户id
+	 * @param userphnoe
+	 * @return
+	 */
+	public String validateid(String userphnoe){
+		String id=null;
+		if(StringUtils.isEmpty(userphnoe)){
+			return id;
+		}else {
+			Map<String, Object> params=new HashMap<String, Object>();
+			params.put("userphnoe", userphnoe);
+			id=dao.queryForString("select.username.number2", params);
+			System.out.println(id);
+			return id;
+			}
+	}
+	/**
+	 * 前台用户注册方法
+	 * @param hbdXuser
+	 */
+	@RequestMapping(value="/savereduser")
+	public void savereduser(HBDXuser hbdXuser){
+		
+		String userphnoe=hbdXuser.getUserphnoe();
+		String password=hbdXuser.getPassword();
+		
+		if(userphnoe!=null&&password!=null){
+			//hbdXuser.setPassword(SecurityContext.getProvider().encryptPassword(hbdXuser.getPassword()));
+			dao.insert(hbdXuser);
+			secLogService.logOperation("添加用户信息", "添加用户(Name=" + hbdXuser.getUserphnoe() + ")成功!");
+		}else {
+			dao.updateFieldsExcluded(hbdXuser, "password");
+			secLogService.logOperation("更新用户信息", "更新用户信息(Name=" + hbdXuser.getUserphnoe() + ")成功!");
+		}
 	}
 }

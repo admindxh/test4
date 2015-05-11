@@ -31,6 +31,8 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<!-- 用户登陆拦截器 -->
 	<filter>
 		<filter-name>DelegateSecurityFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -47,6 +49,21 @@
 		<filter-name>DelegateSecurityFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+		<filter-name>DelegateSecurityFilter</filter-name>
+		<url-pattern>/web/red/*</url-pattern>
+	</filter-mapping>
+	<!-- end -->
+	
+	<servlet>
+		<servlet-name>ReduserLogin</servlet-name>
+		<servlet-class>bingo.modules.securityConsole.webController.ReduserLogin</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ReduserLogin</servlet-name>
+		<url-pattern>/reduserlogin</url-pattern>
+	</servlet-mapping>
+          
 	<filter>
 		<filter-name>LightMvc-Filter</filter-name>
 		<filter-class>org.lightframework.mvc.MvcFilter</filter-class>

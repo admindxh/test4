@@ -120,4 +120,5 @@ public class ExchangehbbController {
 			JOptionPane.showMessageDialog(null, "收益金额不足500，请明天再来");
 		}
 	}
+	
 }
