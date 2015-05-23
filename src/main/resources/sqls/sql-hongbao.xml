@@ -28,7 +28,10 @@
 	    select sum(hbnumber) from hbdx_hbc HBC where 1=1 {? AND HBC.hbcID=#hbcID#}
 	</entry>
 	
-	
+	<!-- 根据ID查询用户名 -->
+	<entry key="select.id.username">
+	   select username from hbdx_user hbuser where 1=1 {? AND hbuser.yhdxdh = #yhdxdh#}
+	</entry>
 	<!-- 统计红包总金额 -->
 	<entry key="list.hbc.total">
 	    select sum(aggreate) from hbdx_hbc HBC where 1=1  {? AND HBC.hbcID=#hbcID#}
@@ -119,7 +122,22 @@
 	    
 	    {? AND hbuser.yhdxdh = #yhdxdh#}
 	</entry>
-	<!--  -->
+	
+	<!-- 更新红包总额 -->
+	<entry key="update.aggreate">
+		update  hbdx_user hbuser set   
+		    hbuser.aggreatMount=#aggreatMount#		           
+	    where 1=1
+	    {? AND hbuser.yhdxdh = #yhdxdh#}
+	</entry>
+	<!-- 更新收益明细表中hbjjze字段 -->
+	<entry key="update.hbjjze">
+		update  hbdx_symx mx set   
+		    mx.hbjjze=#hbjjze#		           
+	    where 1=1
+	    {? AND mx.yhdxdhfk = #yhdxdhfk#}
+	</entry>
+	<!-- 更新红包币 -->
 	<entry key="update.hbb.test">
 		update  hbdx_user hbuser set   
 		    
@@ -186,11 +204,6 @@
     <!-- 根据用户ID查询红包币 -->
     <entry key="list.hbb">
        select  huser.hbb  from hbdx_user huser where 1=1 {? AND HUSER.YHDXDH=#YHDXDH#}
-    </entry>
-    
-    <!-- 根据用户ID查询用户姓名或群红包名称 -->
-    <entry key="select.id.username">
-      select huser.username from hbdx_user huser where 1=1 {? AND HUSER.YHDXDH=#YHDXDH#}
     </entry>
     
     <!-- 更新数据到红包表  -->
@@ -340,6 +353,10 @@ values(hb.hbjj=#hbjj#,hb.zhstatus="zhstatus",hb.crje=#crje#,hb.czrq=#czrq#,hb.qx
     <!-- 更新收益明细表中的收益总额、红包币、报单积分字段 -->
     <entry key="update.symx.sy">
       update hbdx_symx mx set mx.hbjjze=#hbjjze# where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
+    </entry>
+    <!-- 更新收益明细表中可提现金额 -->
+    <entry key="update.symx.ketixian">
+      update hbdx_symx mx set mx.ketimoney=#ketimoney# where 1=1 {? and mx.yhdxdhfk=#yhdxdhfk#}
     </entry>
     <!-- 更新收益明细表中的收益总额、红包币、报单积分字段-->
     <entry key="update.symx.syze.with">

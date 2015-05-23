@@ -74,6 +74,7 @@ public class ExchageController {
 				name="暂无介绍人";
 			}
 			Result.setAttribute("title", "创建下线用户");
+			Result.setAttribute("userphnoe", userphnoe);;
 			Result.setAttribute("name",name );
 			Result.setAttribute("hbdxuser",exchangehbbService.getYhdlById(id));
 			Result.forward("/web/red/login.jsp");
@@ -129,7 +130,10 @@ public class ExchageController {
 		Result.setAttribute("hbdXuser",exchangehbbService.getYhdlById(id));
 		Result.forward("/web/red/excB.jsp");
 	}
-	
+	/**
+	 * 红包基金转账
+	 * @param id
+	 */
 	public void excRMB(String id){
 		Result.setAttribute("title", "红包基金转账");
 		Result.setAttribute("hbdXuser",exchangehbbService.getYhdlById(id));
@@ -137,10 +141,43 @@ public class ExchageController {
 	}
 	
 	/**
-	 * 红包基金转账
-	 * @param money
+	 * 红包提现
+	 * @param id
 	 */
-	public void excRMBZH(double money) {
-		
+	public void traRMBTX(String id){
+		Result.setAttribute("title", "红包提现");
+		String username=exchangehbbService.getusername(id);
+		double number=exchangehbbService.getdailisy(id);//查询账户余额
+		Result.setAttribute("hbdXuser",exchangehbbService.getYhdlById(id));
+		Result.setAttribute("yhdxdh", id);
+		char[] test=new char[4];
+		id.getChars(14, 17, test, 0);
+		System.out.println(test);
+		Result.setAttribute("test", test);
+		Result.setAttribute("username", username);
+		Result.setAttribute("txjine", number);
+		Result.forward("/web/red/traRMB.jsp");
+	}
+	
+	public void myLinqian(String id){
+		Result.setAttribute("title", "我的零钱");
+		double number=exchangehbbService.getdailisy(id);//查询账户余额
+		Result.setAttribute("hbdXuser",exchangehbbService.getYhdlById(id));
+		Result.setAttribute("txjine", number);
+		Result.forward("/web/red/myMoney.jsp");
+	}
+	
+	public void chongzhi(String id){
+		Result.setAttribute("title", "红包基金转账");
+		Result.setAttribute("hbdXuser",exchangehbbService.getYhdlById(id));
+		Result.forward("/web/red/Chonzhi.jsp");
+	}
+	
+	public void doRMBDH(String id){
+		Result.setAttribute("title", "红包基金兑换");
+		Result.setAttribute("hbdXuser",exchangehbbService.getYhdlById(id));
+		double number=exchangehbbService.getredpackege(id);//查询可兑换金额
+		Result.setAttribute("txjine", number);
+		Result.forward("/web/red/toRMB.jsp");
 	}
 }

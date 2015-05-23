@@ -14,6 +14,7 @@
     <ui:combine widgets="dhtmlxgrid,dialog,multiselect,messagebox"></ui:combine>
     <ui:combine widgets="validator,inputpro,listselectdialog,dialog,blockui"></ui:combine>
 	<ui:script src="/web/red/js/edite_sec_redpackage.js"></ui:script>
+	<ui:script src="/web/red/js/login.js"></ui:script>
 	<link rel="stylesheet" href="${contextPath}/web/red/res/css/common.css" />
     <link rel="stylesheet" href="${contextPath}/web/red/res/css/packet.css" />
 	<script src="${contextPath}/web/red/res/js/zepto.js"></script>
@@ -28,12 +29,12 @@
 	<form action="#" data-widget="validator" class="form-horizontal" id="SEC_HBB_FOMR">
 	<input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }">
 	<div class="container transfer-info mt20">
-		<p><span>&nbsp;&nbsp;接收账号：</span><input type="text" class="" name="userphnoe" value="1234567"></p>
+		<p><span>&nbsp;&nbsp;接收账号：</span><input type="text" onblur="cardclick()" id="userphnoe" name="userphnoe"></p>
 	</div>
 	<div class="container transfer-info" id="inputPad">
 		<div class="clearfix">
 			<span>&nbsp;&nbsp;金&nbsp;&nbsp;&nbsp;&nbsp;额（元）：</span>
-			<input type="text" class="hbjj" id="hbjj" value="1234">
+			<input type="text" class="aggreatMount" id="aggreatMount">
 		</div>
 	</div>
 

@@ -29,9 +29,9 @@
 	<form action="" method="get">
 	<input type="hidden" id="yhdxdh" name="yhdxdh" value="${hbdXuser.yhdxdh }">
   	<div class="rows center-fn clearfix">
-  		<a href="#" class="col-4 center-fn-item item1">
+  		<a href="#" class="col-4 center-fn-item item1" onClick="myMoney()">
   			<i class="t1"></i>
-  			<span>红包转账</span>
+  			<span>我的零钱</span>
   		</a>
   		<a href="#" class="col-4 center-fn-item item2" onClick="record()">
   			<i class="t2"></i>
@@ -41,7 +41,7 @@
   			<i class="t3"></i>
   			<span>基金转账</span>
   		</a>
-  		<a href="traRMB.html" class="col-4 center-fn-item item4" onClick="">
+  		<a href="#" class="col-4 center-fn-item item4" onClick="traRMBTX()">
   			<i class="t4"></i>
   			<span>红包提现</span>
   		</a>

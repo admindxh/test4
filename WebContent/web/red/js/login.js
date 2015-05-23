@@ -83,6 +83,7 @@ function getCookie(cookieName){//自定义函数
 var saveflag=true;
 
 function checkphnoe(value){
+	alert(1);
 	var exists = null;
 	var yhdxdh="";
 	$.dataservice("spring:redbackService.checkphnoe", {

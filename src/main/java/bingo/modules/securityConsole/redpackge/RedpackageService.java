@@ -598,17 +598,17 @@ public class RedpackageService extends BaseService{
 			String id=dao.queryForString("select.username.number2", params);
 			params.put("yhdxdh", id);
 			String passwords=dao.queryForString("select.password.number3", params);
-			
-			if(passwords.equals(password)){
-				return true;
-			}else {
-			//	JOptionPane.showMessageDialog(null, "用户名和密码不正确，请重新输入");
-				return users;
+			if(StringUtils.isNotEmpty(passwords)){
+				if(passwords.equals(password)){
+					return true;
+				}else {
+				//	JOptionPane.showMessageDialog(null, "用户名和密码不正确，请重新输入");
+					return users;
+				}
 			}
-		}else {
-			//JOptionPane.showMessageDialog(null, "该用户不存在，请重新输入");
 			return users;
 		}
+		return users;
 	}
 	
 	/**

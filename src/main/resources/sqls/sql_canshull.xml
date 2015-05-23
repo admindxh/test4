@@ -207,7 +207,7 @@
 	</entry>
 	<!-- 判断用户是否存在 -->
 	<entry key="select.username.number1">
-	   select count(1) from hbdx_user hbuser where 1=1 {? and hbuser.userphnoe=#userphnoe#}
+	   select count(*) from hbdx_user hbuser where 1=1 {? and hbuser.userphnoe=#userphnoe#}
 	</entry>
 	<!-- 根据用户电话号码查询用户ID -->
 	<entry key="select.username.number2">

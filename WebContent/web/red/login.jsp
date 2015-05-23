@@ -25,7 +25,7 @@
 	  function cardclick(grid, rowData, keyData){
 		  var phone=document.getElementById("userphnoe").value;
 		  var iphone=/^(13[0-9]{9})|(15[89][0-9]{8})|(18[0-9]{9})$/;
-		 
+		  
 		  if((iphone.test(phone))){
 				  var url='~/exchage/createusers.do?userphnoe='+ phone;
 				  window.location.href=$.utils.parseUrl(url);
@@ -66,7 +66,7 @@
 			         <input type="hidden" name="id" id="id" value="<%=request.getAttribute("id") %>">
 			         <input type="hidden" name="yhdxdh" value="${hbdXuser.yhdxdh }"/>
 						<p>手机号码</p>
-						<p><input type="text" class="input tel" id="userphnoe" name="userphnoe" data-validator="mobile" onblur="return cardclick()" onkeydown="if(event.keyCode == 13||event.which == 13)" value="${hbdXuser.userphnoe }"></p>
+						<p><input type="text" class="input tel" id="userphnoe" name="userphnoe" data-validator="mobile" onblur="return cardclick()" onkeydown="if(event.keyCode == 13||event.which == 13)" value="${userphnoe }"></p>
 						<p>密码</p>
 						<p><input type="password" class="input pw" id="password" name="password" onkeydown="if(event.keyCode == 13||event.which == 13)"></p>
 						<!-- 如果有推荐人则读取推荐人 -->

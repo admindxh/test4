@@ -16,16 +16,184 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
 	}
 	return true;
 }
+  
+	function dosavedh(grid, rowData, keyData){
+		var valInfo = $.validation.validate("#SEC_HBB_FOMR");
+		
+		if (valInfo.isError)
+		return;
+		var hbjj = $('#SEC_HBB_FOMR').toJson();
+		var exists=null;
+		$.dataservice("spring:exchangehbbService.toRMBsavedh", hbjj, function(response) {
+					$.dialogReturnValue(true);
+					$(document).dialogClose();
+					exists = response;
+					location.replace(document.referrer);//返回并刷新
+				}, {
+					async : false
+				});	
+		if (exists) {
+			saveflag=true;
+			alert("兑换成功！");
+			return {
+				isError : false,
+				errorInfo : "兑换成功！"
+			};
+		} else {
+			saveflag=false;
+			alert('兑换失败,请重新输入!');
+		}
+	}
+/**
+ * 前台调用方法
+ * 红包基金兑换
+ */
+	function toRMBDH(){
+		var id=document.getElementById("yhdxdh").value;
+		var url='~/exchage/doRMBDH.do?id='+id;
+		window.location.href=$.utils.parseUrl(url);
+	}
+/**
+ * 用户充值保存方法
+ * @date 2015/5/24
+ * @param grid
+ * @param rowData
+ * @param keyData
+ * @returns {___anonymous975_1032}
+ */
+	function mychongzhi(grid, rowData, keyData){
+		var valInfo = $.validation.validate("#SEC_HBB_FOMR");
+		
+		if (valInfo.isError)
+		return;
+		var hbjj = $('#SEC_HBB_FOMR').toJson();
+		var exists=null;
+		$.dataservice("spring:exchangehbbService.dosaveChongzhi", hbjj, function(response) {
+					$.dialogReturnValue(true);
+					$(document).dialogClose();
+					exists = response;
+					location.replace(document.referrer);//返回并刷新
+				}, {
+					async : false
+				});	
+		if (exists) {
+			saveflag=true;
+			alert("充值成功！");
+			return {
+				isError : false,
+				errorInfo : "红包基金转账成功！"
+			};
+		} else {
+			saveflag=false;
+			alert('充值失败,请重新输入!');
+		}
+	}
+/**
+ * 前台调用方法
+ * 用户充值
+ */
+	function chongzhi(){
+		
+		var id=document.getElementById("yhdxdh").value;
+		var url='~/exchage/chongzhi.do?id='+id;
+		window.location.href=$.utils.parseUrl(url);
+	}
+/**
+ * @param 前台调用方法
+ * @param 我的零钱
+ */
+	function myMoney(){
+		var id=document.getElementById("yhdxdh").value;
+		var url='~/exchage/myLinqian.do?id='+id;
+		window.location.href=$.utils.parseUrl(url);
+	}
+/**
+ * 前台用户提现调用方法
+ * @param grid
+ * @param rowData
+ * @param keyData
+ * @returns {___anonymous998_1055}
+ */
+	function hbtixian(grid, rowData, keyData){
+		var valInfo = $.validation.validate("#SEC_HBB_FOMR");
+		
+		if (valInfo.isError)
+		return;
+		var hbjj = $('#SEC_HBB_FOMR').toJson();
+		var exists=null;
+		$.dataservice("spring:exchangehbbService.deleteProceeds", hbjj, function(response) {
+					$.dialogReturnValue(true);
+					$(document).dialogClose();
+					exists = response;
+					location.replace(document.referrer);//返回并刷新
+				}, {
+					async : false
+				});	
+		if (exists) {
+			saveflag=true;
+			alert("提取红包收益成功！");
+			return {
+				isError : false,
+				errorInfo : "红包基金转账成功！"
+			};
+		} else {
+			saveflag=false;
+			alert('提取红包收益失败,请重新输入!');
+		}
+	}
+	/**
+	 * 财务中心跳转到红包提现页面
+	 */
+	function traRMBTX(){
+		var id=document.getElementById("yhdxdh").value;
+		var url='~/exchage/traRMBTX.do?id='+id;
+		window.location.href=$.utils.parseUrl(url);
+	}
 
+	function cardclick(grid, rowData, keyData){
+	  var phone=document.getElementById("userphnoe").value;
+	  var iphone=/^(13[0-9]{9})|(15[89][0-9]{8})|(18[0-9]{9})$/;
+	  
+	  if((iphone.test(phone))){
+			 
+		  }else{   
+	          	alert("请重新输入账号！");
+	          	return false;
+			  }
+	  
+	}
 	function excRMB(){
 		var id=document.getElementById("yhdxdh").value;
 		var url='~/exchage/excRMB.do?id='+id;
 		window.location.href=$.utils.parseUrl(url);
 	}
 	function hbjjdelete(grid, rowData, keyData){
-		var money=document.getElementById("hbjj").value;
-		var url='~/exchage/hbjjzh.do?money='+money;
-		window.location.href=$.utils.parseUrl(url);
+		var valInfo = $.validation.validate("#SEC_HBB_FOMR");
+		
+		if (valInfo.isError)
+		return;
+		var hbjj = $('#SEC_HBB_FOMR').toJson();
+		var exists=null;
+		$.dataservice("spring:exchangehbbService.getexcRMBZH", hbjj, function(response) {
+					$.dialogReturnValue(true);
+					$(document).dialogClose();
+					exists = response;
+					/*alert("红包基金转账成功！");*/
+					location.replace(document.referrer);//返回并刷新
+				}, {
+					async : false
+				});	
+		if (exists) {
+			saveflag=true;
+			alert("红包基金转账成功！");
+			return {
+				isError : false,
+				errorInfo : "红包基金转账成功！"
+			};
+		} else {
+			saveflag=false;
+			alert('红包基金转账转账失败,请重新输入!');
+		}
 	}
 	/**
 	 * 红包币转账
@@ -45,13 +213,27 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
 		if (valInfo.isError)
 		return;
 		var user = $('#SEC_HBB_FOMR').toJson();
-
+		var exists = null;
 		$.dataservice("spring:exchangehbbService.savehbbzz", user, function(response) {
 					$.dialogReturnValue(true);
 					$(document).dialogClose();
-					alert("红包币转账成功！");
+					exists = response;
+					
 					location.replace(document.referrer);//返回并刷新
+				}, {
+					async : false
 				});	
+		if (exists) {
+			saveflag=true;
+			alert("红包币转账成功！");
+			return {
+				isError : false,
+				errorInfo : "红包币转账成功！"
+			};
+		} else {
+			saveflag=false;
+			alert('红包币转账转账失败,请重新输入!');
+		}
 		
 	}
 	/**
@@ -68,13 +250,23 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
 			if (valInfo.isError)
 			return;
 			var user = $('#SEC_HBB_FOMR').toJson();
-
+			var exists = null;
 			$.dataservice("spring:exchangehbbService.getflager", user, function(response) {
 						$.dialogReturnValue(true);
 						$(document).dialogClose();
-						alert("购买红包币成功！");
+						exists = response;
 						location.replace(document.referrer);//返回并刷新
+					}, {
+						async : false
 					});	
+			if (exists) {
+				saveflag=true;
+				alert("购买红包币成功！");
+			} else {
+				saveflag=false;
+				alert('购买红包币失败,请重新输入!');
+			}
+			
 		}
 	
 	/**
@@ -103,7 +295,7 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
 				errorInfo : "账号正确"
 			};
 		} else {
-			alert(exists);
+			
 			saveflag=false;
 			alert('账号无效,请重新输入!');
 		}

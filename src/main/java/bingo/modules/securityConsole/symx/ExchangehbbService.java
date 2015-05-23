@@ -54,7 +54,20 @@ public class ExchangehbbService extends BaseService{
 	}
 
 	/**
+	 * 根据id查用户名
+	 * time:2015/5/23
+	 * @param yhdxdh
+	 * @return
+	 */
+	public String getusername(String yhdxdh){
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("yhdxdh", yhdxdh);
+		String usernameString=dao.queryForString("select.id.username", params);
+		return usernameString;
+	}
+	/**
 	 * 红包币转账
+	 * time:2015/5/23
 	 * @param hbdXuser
 	 */
 	public void savehbbzz(HBDXuser hbdXuser){
@@ -83,11 +96,12 @@ public class ExchangehbbService extends BaseService{
 	}
 	/**
 	 * 根据id查询用户的红包币，并更新数据库
+	 * time:2015/5/23
 	 * @param id
 	 * @param num
 	 * @return
 	 */
-	public void getflager(HBDXuser hbdXuser){
+	public boolean getflager(HBDXuser hbdXuser){
 		int number=0;
 		String yhdxdh=hbdXuser.getYhdxdh();
 		int num=hbdXuser.getHbb();
@@ -99,8 +113,10 @@ public class ExchangehbbService extends BaseService{
 			params.put("hbb", number);
 			Double aggreat=dao.queryForDouble("user.list.aggreatMount", params);
 			params.put("aggreatMount", aggreat);
-			dao.update("update.hbb",params);	
+			dao.update("update.hbb",params);
+			return true;
 		}
+		return false;
 	}
 	/**
 	 * 根据用户电话号码查询用户id
@@ -471,7 +487,7 @@ public class ExchangehbbService extends BaseService{
 	}
 	
 	/**
-	 * 查询红包日收益总额
+	 * 查询红包收益总额
 	 * @param yhdxdh
 	 * @return
 	 */
@@ -513,6 +529,7 @@ public class ExchangehbbService extends BaseService{
 	
 	/**
 	 * 提取红包收益总额
+	 * 实现原理：每次提现更新起始日期和结束日期，并将提现后剩余金额放入明细表中ketimoney
 	 * @param yhdxdh
 	 */
 	public void deleteProceeds(HBDXuser hbdXuser,String yhdxdh){
@@ -535,13 +552,83 @@ public class ExchangehbbService extends BaseService{
 		}
 		
 	}
+
+	/**
+	 * 保存用户充值
+	 * @date 2015/5/24
+	 * @param hbdXuser
+	 * @return
+	 */
+   public boolean dosaveChongzhi(HBDXuser hbdXuser){
+	String id=hbdXuser.getYhdxdh();
+	Double aggreatMount=hbdXuser.getAggreatMount();
+	if(StringUtils.isNotEmpty(id)){
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("yhdxdh", id);
+		Double numberDouble=dao.queryForDouble("select.ketimoney", params);//查询用户可提现金额
+		numberDouble=numberDouble+aggreatMount;
+		params.put("ketimoney", numberDouble);
+		params.put("yhdxdhfk", id);
+		dao.update("update.symx.ketixian",params);
+		return true;
+	}
+	return false;
+	   
+   }
 	
-	public void getexcRMBZH(){
+	/**
+	 * 红包基金转账
+	 * time:2015/5/23
+	 * @param hbdXuser
+	 */
+	public boolean getexcRMBZH(HBDXuser hbdXuser){
+		String userphnoe=hbdXuser.getUserphnoe();//获取接收账号
+		String yhdxdh=hbdXuser.getYhdxdh();//获取当前用户id
+		Double aggreatMount=hbdXuser.getAggreatMount();//获取转账红包基金金额
+		if(StringUtils.isNotEmpty(userphnoe)){
+			Map<String, Object> params=new HashMap<String, Object>();
+			params.put("yhdxdh", yhdxdh);
+			Double hbjjze=this.getRedpackage(yhdxdh);//查询当前用户红包基金总额
+			if(hbjjze>=aggreatMount){//判断当前用户是否有足够的资金转账
+				hbjjze=hbjjze-aggreatMount;
+				params.put("hbjjze", hbjjze);
+				params.put("yhdxdhfk", yhdxdh);
+				params.put("userphnoe", userphnoe);
+				
+				//判断接收转账用户的合法性
+				Integer number=dao.queryForInt("select.username.number1", params);
+				if (number>0&&number<2){
+					String yhid=dao.queryForString("select.username.number2", params);
+					dao.update("update.symx.sy",params);//转账成功更新数据库表记录
+					Double hbjj=this.gethbjjTotal(yhid);//查询接收转账用户红包基金总额
+					hbjj=hbjj+aggreatMount;
+					params.put("hbjjze", hbjj);
+					params.put("yhdxdhfk", yhid);
+					dao.update("update.symx.sy",params);//转账成功更新数据库表记录
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
+	}
+	/**
+	 * 前台调用方法（查询红包基金总额）
+	 * time:2015/5/23
+	 * @param yhdxdh
+	 * @return
+	 */
+	public double gethbjjTotal(String yhdxdh){
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("yhdxdh", yhdxdh);
+		Double jijinDouble=dao.queryForDouble("select.hbjj", params);
+		return jijinDouble;
 		
 	}
 	
 	/**
 	 * 查询红包基金总额（提取红包基金调用的方法）
+	 * time:2015/5/23
 	 * @param hbdXuser
 	 * @return
 	 */
@@ -583,8 +670,6 @@ public class ExchangehbbService extends BaseService{
 						total=hbjj*(day-1)+hbjj*(day-1)*0.1;
 						System.out.println(total);
 						total=total+number;
-					}else {
-						JOptionPane.showMessageDialog(null, "时间不符合提现要求，请明天再来");
 					}
 			    	
 			    	//把红包基金存放在收益明细表中
@@ -832,6 +917,7 @@ public class ExchangehbbService extends BaseService{
 					dao.update("update.everyday.hongli",params);
 				}
 			}
+			
 		}
 		
 		/*int day=dao.queryForInt("list.date", params);//查询截止当前时间是几天
@@ -866,6 +952,33 @@ public String getHBDXuserById(String userphnoe) {
 	String id=dao.queryForString("select.username.number2", params);
 	return id;
 }
-	
+
+public double getredpackege(String id){
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("yhdxdh", id);
+		double num=dao.queryForDouble("user.list.aggreatMount", params);
+		return num;	
+	}
+
+public boolean toRMBsavedh(HBDXuser hbdXuser){
+	Double hbzeDouble=hbdXuser.getAggreatMount();
+	String idString=hbdXuser.getYhdxdh();
+	Double hbjjze=hbdXuser.getEveryoneTotal();
+	Double number=this.getRedpackage(idString);
+	Map<String, Object> params=new HashMap<String, Object>();
+	params.put("yhdxdh", idString);
+	if(number>=hbzeDouble){
+		number=number-hbzeDouble;
+		params.put("aggreatMount", number);
+		dao.update("update.aggreate",params);
+		Double sumDouble=this.getRedpackage(idString);
+		sumDouble=sumDouble+hbjjze;
+		params.put("hbjjze", sumDouble);
+		params.put("yhdxdhfk", idString);
+		dao.update("update.hbjjze",params);
+		return true;
+	}
+	return false;
+}
 	
 }
