@@ -2,6 +2,7 @@
 <html>
 <head>
     <title ng-bind="title">首页</title>
+    
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta name="format-detection" content="telephone=no">
@@ -10,17 +11,27 @@
 
     <link rel="stylesheet" href="res/css/common.css" />
     <link rel="stylesheet" href="res/css/packet.css" />
-
+	
 	<script src="res/js/zepto.js"></script>
+	
 	<script type="text/javascript">
-	   function paihongbao(data){
-		    var url = '~/redPackge/doQiangh.do?yhdxdh='+keyData;
-			var id = '${param.yhdxdh}';
-			var name = '${param.name}';
-			$.post(url,{yhdxdh:id,name:name},function(data){
-				alert(1);
-			});
-	   }
+	function qianghh(obj) {
+		var id=null;
+		alert(1);
+		if(obj){
+			id=obj.id;
+			
+			if(id=="2"){
+				var url1='~/poral/getValue1.do?id='+id;
+				window.location.href=$.utils.parseUrl(url);
+			}
+			
+			
+		}
+		var url='~/poral/getValue2.do?id='+id;
+		window.location.href=$.utils.parseUrl(url);
+		
+	}
 	</script>
 </head>
 <body style="padding-bottom:20px;">
@@ -69,9 +80,9 @@
     </div>
   </div>
 
-  <div class="container rows ac-btns  clearfix mt20">
-    <div class="col-6 ac-btns-item"><a href="#" class="btn green-btn">派红包</a></div>
-    <div class="col-6 ac-btns-item"><a href="#" class="btn red-btn">抢红包</a></div>
+  	<div class="container rows ac-btns  clearfix mt20">
+    	<div class="col-6 ac-btns-item"><a href="#" class="btn green-btn" id="btnphb" onClick="qianghh(this)">派红包</a></div>
+    	<div class="col-6 ac-btns-item"><a href="#" class="btn red-btn" id="2" onClick="qianghh(this)">抢红包</a></div>
 	</div>
 
   <div class="rows ico-info clearfix mt20">

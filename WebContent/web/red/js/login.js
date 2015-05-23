@@ -15,10 +15,14 @@ window.onload = function initForm(){//登录界面不嵌入到任何子页面
 
 //记录登录信息
 function saveLoginInfo(){
-	
 	setCookie('userphnoe',document.getElementById('userphnoe').value,30);
 }
 
+/**
+ * 获取当前页面的缩放比
+ * document.body.style.zoom=$(window).width/640
+ * @returns {Boolean}
+ */
 function doSubmit(){
 	saveLoginInfo();
 	document.forms[0].submit();

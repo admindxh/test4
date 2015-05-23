@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="res/css/packet.css" />
 
 	<script src="res/js/zepto.js"></script>
+	<script type="text/javascript">
+	  function doCzff(){
+		   var url='~/poral/dosendPacket.do?yhdxdh='+id;
+			window.location.href=$.utils.parseUrl(url);
+	  }
+	</script>
 </head>
 <body>
     <!-- header -->
@@ -22,13 +28,13 @@
 
   <div class="rows faq-title-list clearfix">
     <div class="col-12 tit-item"><a href="#">基本介绍</a></div>
-    <div class="col-12 tit-item"><a href="#">操作方法</a></div>
+    <div class="col-12 tit-item"><a href="faq2.html" onClick="doCzff()">操作方法</a></div>
     <div class="col-12 tit-item"><a href="#">提现问题</a></div>
     <div class="col-12 tit-item"><a href="#">联系方式</a></div>
   </div>
 
   <div class="rows faq-title-list clearfix mt20">
-    <a href="#" class="col-12 tit-item">红包币的未来</a>
+    <a href="faq1.html" class="col-12 tit-item">红包币的未来</a>
     <a href="#" class="col-12 tit-item">如何发红包/红包币？</a>
     <a href="#" class="col-12 tit-item">如何收红包/红包币？</a>
   </div>

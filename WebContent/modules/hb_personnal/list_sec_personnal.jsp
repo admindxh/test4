@@ -9,10 +9,6 @@
 		<%@include file="/common/meta.jsp"%>
 		<ui:combine widgets="dhtmlxgrid,dialog,multiselect,messagebox"></ui:combine>
 		<ui:script src="/modules/userjhm/script/list_sec_userZCJH.js"></ui:script>
-		<script type="text/javascript">
-			var yhdxdh = '${param.yhdxdh}';
-			var username = '${param.username}';
-		</script>
 	</head>
 	
 	<body class="container-body">
@@ -62,7 +58,7 @@
 									</td>
 									<td class="toolbar-btns" rowspan="3">
 										<button type="button" class="btn" onclick="user_grid.doSearch();">查询</button>
-										<button type="button" class="btn"/ onclick="document.forms['queryForm'].reset();">重置</button>
+										<button type="button" class="btn" onclick="document.forms['queryForm'].reset();">重置</button>
 									</td>
 								</tr>
 								<tr class="toggle-content2" style="display:none">
@@ -92,7 +88,7 @@
 								<div class="pull-right">
 								   
 									<security:isAllow privilege="USER_MANAGE$CREATE_USER">
-									    <a class="btn" href="javascript:void(0);" onclick="userdenglu()"><i class="icon-plus"></i>红包用户登录</a>	
+									    <a class="btn" href="javascript:void(0);" onclick="problelr()"><i class="icon-plus"></i>常见问题分类录入</a>	
 									</security:isAllow>
 									
 								</div>
@@ -110,8 +106,7 @@
 								</security:isAllow>
 								<security:isAllow privilege="USER_MANAGE$DELETE_USER">
 									<dg:action label="删除用户" onClick="deleteUser" id="delete_user" icon="/statics/images/ico_del.gif"></dg:action>
-								</security:isAllow>
-								
+								</security:isAllow>	
 							</dg:operationColumn>
 							<dg:column id="yhdxdh" width="0" header="用户ID" type="ro" align="center" visible="false" isKey="true"></dg:column>
 							<dg:column id="username" width="15" header="用户名" type="ro" align="center"></dg:column>

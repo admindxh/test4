@@ -23,6 +23,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <link rel="stylesheet" href="${contextPath}/web/red/res/css/common.css" />
     <link rel="stylesheet" href="${contextPath}/web/red/res/css/packet.css" />
+    
+    <script type="text/javascript">
+      function sdfs(){
+    	  
+    	  var tt=document.getElementById("hbze").innerHTML;
+    	  alert(1);
+    	  
+      }
+    </script>
 </head>
 
 
@@ -32,16 +41,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<i class="ico-arr"></i>
 		<span class="nav-tit">新年红包</span>
 	</div>
-
+	<form action="" method="post" id="SEC_RECEIVED_FOMR">
 	<div class="packet-body">
     	<div class="to-packet">
   			<img src="${contextPath}/web/red/res/images/bg-packet.jpg" alt="">
     	</div>
-       
+       		<input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
+       		<input type="hidden" name="id" id="id" value="${Received.id }">
     		<div class="to-packet">
   			<div class="t0-packet-con" id="">
 	  			<div class="em-tips">恭喜您获得￥<span>
-	  			   ${hbze}
+	  			   ${hbze}<input type="hidden" name="aggreatMount" id="aggreatMount" value="${hbze}">
 	  			</span>元红包
 	  			</div>
   	  				<div class="btn-cover">
@@ -49,12 +59,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   					</div>
 
   					<div class="btn-cover">
-  						<a href="${contextPath}/web/red/myRecieve.html" class="btn red-btn1">查看我的红包</a>
+  						<a href="#" class="btn red-btn1" onClick="myredpackge()">查看我的红包</a>
   					</div>
       		</div>
 			</div>
 		
 	</div>
-
+	</form>
 </body>
 </html>

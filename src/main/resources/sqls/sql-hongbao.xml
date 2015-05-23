@@ -22,7 +22,7 @@
         WHERE 1=1  
         {? AND HBC.hbcID =#hbcID#}
     </entry>
-	
+    
 	<!-- 统计红包个数 -->
 	<entry key="list.hbc.hbgs">
 	    select sum(hbnumber) from hbdx_hbc HBC where 1=1 {? AND HBC.hbcID=#hbcID#}
@@ -119,7 +119,15 @@
 	    
 	    {? AND hbuser.yhdxdh = #yhdxdh#}
 	</entry>
-	
+	<!--  -->
+	<entry key="update.hbb.test">
+		update  hbdx_user hbuser set   
+		    
+		           hbuser.hbb=#hbb#
+	    where 1=1
+	    
+	    {? AND hbuser.yhdxdh = #yhdxdh#}
+	</entry>
     <!-- 统计所有用户 -->
     <entry key="list.select.hbdxuser">
     SELECT  HUSER.yhdxdh as ID,HUSER.USERNAME as TEXT FROM hbdx_user HUSER WHERE 1=1 
@@ -178,6 +186,11 @@
     <!-- 根据用户ID查询红包币 -->
     <entry key="list.hbb">
        select  huser.hbb  from hbdx_user huser where 1=1 {? AND HUSER.YHDXDH=#YHDXDH#}
+    </entry>
+    
+    <!-- 根据用户ID查询用户姓名或群红包名称 -->
+    <entry key="select.id.username">
+      select huser.username from hbdx_user huser where 1=1 {? AND HUSER.YHDXDH=#YHDXDH#}
     </entry>
     
     <!-- 更新数据到红包表  -->

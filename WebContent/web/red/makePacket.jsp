@@ -25,8 +25,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <meta name="format-detection" content="telephone=no">
     <meta content="yes" name="apple-mobile-web-app-capable" />
     <meta content="black" name="apple-mobile-web-app-status-bar-style" />
- 	<link rel="stylesheet" href="res/css/common.css" />
-    <link rel="stylesheet" href="res/css/packet.css" />
+ 	<link rel="stylesheet" href="${contextPath}/web/red/res/css/common.css" />
+    <link rel="stylesheet" href="${contextPath}/web/red/res/css/packet.css" />
 </head>
 <body>
     <!-- header -->
@@ -34,24 +34,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<i class="ico-arr"></i>
 		<span class="nav-tit">我也要发红包</span>
 	</div>
-
+	<form action="" method="post">
 	<div class="make-bg mt20">
 	</div>
-
-	<div class="container mt20">
+	<input type="hidden" id="yhdxdh" name="yhdxdh" value="${hbdXuser.yhdxdh }"/>
+	<div style="padding-left:15px;padding-right:15px;margin-top:20px;">
 		<a href="#" class="btn red-btn1" onClick="qianghb()">拼手气红包</a>
 	</div>
 
-	<div class="container mt20">
+	<div style="padding-left:15px;padding-right:15px;margin-top:20px;">
 		<a href="#" class="btn yellow-btn" onClick="putongRedpackge()">普通红包</a>
 	</div>
-
-	<div class="container mt20">
+	
+	<div style="padding-left:15px;padding-right:15px;margin-top:20px;">
 		<div class="rows">
-			<div class="col-6"><a class="make-recieve" href="#">收到的红包</a></div>
-			<div class="col-6"><a class="make-send" href="#">我发的红包</a></div>
+			<div class="col-6"><a class="make-recieve" href="#" onClick="myReccieve()">收到的红包</a></div>
+			<div class="col-6"><a class="make-send" href="#" onClick="mySend()">我发的红包</a></div>
 		</div>
 	</div>
-
+	</form>
 </body>
 </html>

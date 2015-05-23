@@ -157,12 +157,12 @@ function createZCUser() {
 			});
 }
 
-//用户登录
-function userdenglu(){
+//常见问题分类
+function problelr(grid, rowData, keyData){
 	
 	
-var url = "~/modules/hb_personnal/edit_sec_userdenglu.jsp";
-	
+	var url = "~/hbproble/doSerch.do";
+	alert(1);
 	$.open(url, 680, null, {}, function() {
 				if ($.dialogReturnValue()) {
 					user_grid.refresh();

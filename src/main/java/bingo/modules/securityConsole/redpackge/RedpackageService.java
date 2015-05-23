@@ -1,6 +1,8 @@
 package bingo.modules.securityConsole.redpackge;
 
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -16,6 +18,7 @@ import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.thoughtworks.xstream.alias.ClassMapper.Null;
 
+import bingo.modules.securityConsole.redlog.Lssue;
 import bingo.modules.securityConsole.redpackge.RedPool;
 import bingo.modules.securityConsole.symx.CanShuLL;
 import bingo.common.BaseService;
@@ -45,11 +48,47 @@ public class RedpackageService extends BaseService{
 	public void setSecLogService(SecLogService secLogService) {
 		this.secLogService = secLogService;
 	}
+	
+	public boolean getusermoney(String yhdxdh){
+		if(StringUtils.isNotEmpty(yhdxdh)){
+			Map<String, Object> params=new HashMap<String, Object>();
+			params.put("yhdxdh", yhdxdh);
+			Double money=dao.queryForDouble("list.users.crje", params);
+			if(money!=0&&money>=2800){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * 前台调用方法
+	 * 群红包，塞钱进红包保存方法
+	 * @param hbdXuser
+	 */
+	public void insertLssue(HBDXuser hbdXuser){
+		String yhdxdh = hbdXuser.getYhdxdh();//用户id
+		SimpleDateFormat dfc = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//设置日期格式
+		String nowtime=dfc.format(new Date());// new Date()为获取当前系统时间
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("yhdxdh", yhdxdh);
+		String username=dao.queryForString("select.id.username", params);
+		Double monney=hbdXuser.getEveryoneTotal();
+		Lssue lssue=new Lssue();
+		lssue.setFromname(username);
+		lssue.setLssuetime(nowtime);
+		lssue.setMonney(monney);
+		lssue.setUserid(yhdxdh);
+		dao.insert(lssue);
+		RedPool redPool=new RedPool();
+		this.saveOrUpdateRedpackge(redPool, hbdXuser);
+	}
 
 	/**
 	 * 根据ID进行保存参数信息
 	 * 统计红包池群发红包总个数和总金额，每次群发更新总记录，无群发明细
 	 * 统计群发后该用户剩余红包个数和剩余金额
+	 * 
 	 * @param userCanShu
 	 */
 	public void saveOrUpdateRedpackge(RedPool redPool,HBDXuser hbdXuser){
@@ -57,12 +96,12 @@ public class RedpackageService extends BaseService{
 		String userId = redPool.getHbcID();//红包池ID
 		Integer hbgs=hbdXuser.getHbgs();//红包个数
 		Double aggreatMount=hbdXuser.getAggreatMount();//红包总额
-		Integer hbnumber=redPool.getHbnumber();//红包池红包个数
-		hbgs=hbnumber;
+		
+		redPool.setHbnumber(hbgs);
 		
 		String  hblb=redPool.getHblb();//红包类别
-		double aggreate=redPool.getAggreate();//红包池总金额
-		aggreatMount=aggreate;
+		
+		redPool.setAggreate(aggreatMount);
 		boolean pool=true;
 		if(StringUtils.isNotEmpty(hbdXuser.getYhdxdh())){
 			Map<String, Object> paraMap=new HashMap<String, Object>();
@@ -84,6 +123,7 @@ public class RedpackageService extends BaseService{
 						sum=sum-hbgs;
 						System.out.println(sum);
 						paraMap.put("hbgs", sum);
+						Integer hbnumber=redPool.getHbnumber();
 						number=number+hbnumber;
 						System.out.println(number);
 						paraMap.put("hbnumber", number);
@@ -100,6 +140,7 @@ public class RedpackageService extends BaseService{
 						y=y-aggreatMount;
 						System.out.println(y);
 						paraMap.put("aggreatMount", y);
+						Double aggreate=redPool.getAggreate();//红包池总金额
 						areement=areement+aggreate;
 						System.out.println(areement);
 						paraMap.put("aggreate", areement);
@@ -158,8 +199,9 @@ public class RedpackageService extends BaseService{
 	    	  String id=(String) map.get("yhdxdh");
 	    	  
 	    	  Integer hbgs=hbdXuser.getHbgs();//红包个数
-	  		  Double aggreatMount=hbdXuser.getAggreatMount();//红包总额
+	  		  
 	  		  Double everyoneTotal=hbdXuser.getEveryoneTotal();//单个红包金额
+	  		Double aggreatMount=everyoneTotal*hbgs;//红包总额
 	    	  if(StringUtils.isNotEmpty(id)){
 	    		  Map<String, Object> param = new HashMap<String, Object>();
 	    		  param.put("yhdxdh", id);
@@ -202,7 +244,28 @@ public class RedpackageService extends BaseService{
 	    
 	}
 
-
+	/**
+	 * 普通红包，塞钱进红包
+	 * 前台调用方法
+	 * @param hbdXuser
+	 */
+    public void insertputong(HBDXuser hbdXuser){
+    	String yhdxdh = hbdXuser.getYhdxdh();//用户id
+		SimpleDateFormat dfc = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//设置日期格式
+		String nowtime=dfc.format(new Date());// new Date()为获取当前系统时间
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("yhdxdh", yhdxdh);
+		String username=dao.queryForString("select.id.username", params);
+		Double monney=hbdXuser.getEveryoneTotal();
+		Lssue lssue=new Lssue();
+		lssue.setFromname(username);
+		lssue.setLssuetime(nowtime);
+		lssue.setMonney(monney);
+		lssue.setUserid(yhdxdh);
+		dao.insert(lssue);
+		this.putonghb(hbdXuser);
+    }
+	
 	/**
 	 * 一对一派红包,普通红包登录用户,红包个数，红包金额，红包总额相对减少
 	 * 该方法调用了随机选择用户派红包方法
@@ -213,9 +276,9 @@ public class RedpackageService extends BaseService{
 		String yhdxdh = hbdXuser.getYhdxdh();//红包编号
 		String notes=hbdXuser.getNotes2();//备注
 		Integer hbgs=hbdXuser.getHbgs();//红包个数
-		Double aggreatMount=hbdXuser.getAggreatMount();//红包总额
-		Double everyoneTotal=hbdXuser.getEveryoneTotal();//单个红包金额
 		
+		Double everyoneTotal=hbdXuser.getEveryoneTotal();//单个红包金额
+		Double aggreatMount=everyoneTotal*hbgs;//红包总额
 		int sum=dao.queryForInt("user.list.hbgs", hbdXuser);
 		//double number=dao.queryForDouble("user.list.everyoneTotal", hbdXuser);
 		double y=dao.queryForDouble("user.list.aggreatMount", hbdXuser);
@@ -570,7 +633,7 @@ public class RedpackageService extends BaseService{
 	 * @param hbdXuser
 	 */
 	@RequestMapping(value="/savereduser")
-	public void savereduser(HBDXuser hbdXuser){
+	public boolean savereduser(HBDXuser hbdXuser){
 		
 		String userphnoe=hbdXuser.getUserphnoe();
 		String password=hbdXuser.getPassword();
@@ -583,5 +646,6 @@ public class RedpackageService extends BaseService{
 			dao.updateFieldsExcluded(hbdXuser, "password");
 			secLogService.logOperation("更新用户信息", "更新用户信息(Name=" + hbdXuser.getUserphnoe() + ")成功!");
 		}
+		return true;
 	}
 }

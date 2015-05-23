@@ -23,7 +23,8 @@ import bingo.modules.securityConsole.yhdl.HBDXuser;
 public class PoralController {
 	
 	private RedpackageService redpackageService;
-	
+	private HttpServletRequest request;
+	private HttpServletResponse response;
 	public RedpackageService getRedpackageService() {
 		return redpackageService;
 	}
@@ -54,20 +55,30 @@ public class PoralController {
 	 * @param yhdxdh
 	 */
 	@RequestMapping(value = "/doQianghb")
-      public void doQianghb(String userphnoe,String password){
+      public void doQianghb(String userphnoe,String password,String id){
 		HBDXuser hbdXuser=new HBDXuser();
 		hbdXuser.setUserphnoe(userphnoe);
 		hbdXuser.setPassword(password);
-		
 		if(StringUtils.isNotEmpty(userphnoe)){
 			boolean flag=redpackageService.dosave(hbdXuser);
 			if(flag==true){
-				String yhdxdh=redpackageService.validateid(userphnoe);
+				String yhdxdh=redpackageService.validateid(userphnoe);//根据用户电话号码查询用户id
 				if(StringUtils.isNotEmpty(yhdxdh)){
-					Result.setAttribute("hbdXuser", redpackageService.getQueryById(yhdxdh));
-					float y=this.doTotal();//抢到单个红包金额
-					Result.setAttribute("hbze", y);
-				    Result.forward("/web/red/toPacket.jsp");
+					Result.setAttribute("hbdXuser", redpackageService.getQueryById(yhdxdh));	
+					if(id.equals("btnphb")){
+						float y=this.doTotal();//抢到单个红包金额
+						Result.setAttribute("hbze", y);
+					    Result.forward("/web/red/toPacket.jsp");
+					}else if(id.equals("2")){
+						 Result.forward("/web/red/getPacket.jsp");
+					}else{
+						//判断用户是否充值
+						boolean money=redpackageService.getusermoney(yhdxdh);
+						if(money=true){
+							Result.forward("/web/red/center.jsp");
+						}
+						
+					}   
 				}
 				
 			}else {
@@ -89,8 +100,13 @@ public class PoralController {
 		  HBDXuser hbdXuser=new HBDXuser();
 		  hbdXuser.setUserphnoe(userphnoe);
 		  hbdXuser.setPassword(password);
-		  redpackageService.savereduser(hbdXuser);
-		  Result.forward("/web/red/login.jsp");
+		  boolean flag=redpackageService.savereduser(hbdXuser);
+		  if(flag==true){
+			  Result.forward("/web/red/login.jsp");
+		  }else {
+			Result.forward("/web/red/register.jsp");
+		}
+		  
 	  }
       /**
        * 抢红包,群红包
@@ -105,6 +121,25 @@ public class PoralController {
   		
   	}
 
-     
+      /**
+       * 区分用户从首页选择是派红包还是抢红包
+       * @param id
+       */
+      public void getValue1(String id){
+    	  if(StringUtils.isNotEmpty(id)){
+    		  Result.setAttribute("id", id);
+    		  Result.forward("/web/red/login.jsp");
+    	  }
+      }
+      /**
+       * 区分用户从首页选择是派红包还是抢红包
+       * @param id
+       */
+      public void getValue2(String id){
+    	  if(StringUtils.isNotEmpty(id)){
+    		  Result.setAttribute("id", id);
+    		  Result.forward("/web/red/login.jsp");
+    	  }
+      }
     
 }

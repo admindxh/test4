@@ -51,7 +51,7 @@
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>DelegateSecurityFilter</filter-name>
-		<url-pattern>/web/red/*</url-pattern>
+		<url-pattern>/f/*</url-pattern>
 	</filter-mapping>
 	<!-- end -->
 	
@@ -61,7 +61,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ReduserLogin</servlet-name>
-		<url-pattern>/reduserlogin</url-pattern>
+		<url-pattern>/login.do</url-pattern>
 	</servlet-mapping>
           
 	<filter>

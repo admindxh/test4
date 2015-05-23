@@ -26,7 +26,7 @@ public class HBDXuser extends BaseObject{
     
     private Double crje;//存入金额
     
-    private Double hbb;//红包币
+    private int hbb;//红包币
     
     private String userphnoe;//用户电话
     
@@ -70,11 +70,11 @@ public class HBDXuser extends BaseObject{
 		this.dldxbhfk = dldxbhfk;
 	}
 
-	public Double getHbb() {
+	public int getHbb() {
 		return hbb;
 	}
 
-	public void setHbb(Double hbb) {
+	public void setHbb(int hbb) {
 		this.hbb = hbb;
 	}
 

@@ -70,30 +70,24 @@
 						<table class="form-table col4-fluid" >
 							<!--<caption>基本信息</caption>-->
 							<tbody>
-							   <input type="hidden" name="hbcID" id="hbcID" value="${redPool.hbcID}"/>
+							   <input type="hidden" name="hblb" id="hblb" value="1"/>
 				               <input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh}"/>
-				               <TR>
-								     <th>红  包 类 别：</th>
-								   <td>
-								        <select id="hblb" name="hblb">
-								           <option value="1">拼手气群红包</option>
-								        </select>
-									</td>
-								  </TR>
+				               
+				      
 								  <TR>
 								     <th>红  包  个  数：</th>
-								   <td><input type="text" id="hbnumber" data-validator="required"  maxlength="20"  style="width: 330px;" class="input-large" value="${redPool.hbnumber}"/>
+								   <td><input type="text" id="hbnumber" data-validator="required"  name="hbgs" maxlength="20"  style="width: 330px;" class="input-large" value="${hbdXuser.hbgs}"/>
 									</td>
 								  </TR>
 								  <TR>
 								    <th>红  包  总  额：</th>
 									<td>
-										<input type="text" data-validator="required" id="aggreate"  style="width: 330px;" class="input-large"	maxlength="38" value="${redPool.aggreate}"/>
+										<input type="text" data-validator="required" id="aggreate"  name="aggreatMount" style="width: 330px;" class="input-large"	maxlength="38" value="${hbdXuser.aggreatMount}"/>
 									</td>
 								  </TR>
 								  <TR>
 								    <th width="60%">备                 注：</th>
-								    <TD><textarea class="input-large" id="notes1" cols="50" rows="5" style="width: 330px;height=24;"  validator="length[0,300]">${redPool.notes1}</textarea></TD>
+								    <TD><textarea class="input-large" id="notes1" cols="50" rows="5" style="width: 330px;height=24;"  validator="length[0,300]">${hbdXuser.notes1}</textarea></TD>
 								  </TR>
 							</tbody>
 						</table>							

@@ -15,8 +15,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <%@include file="/common/meta.jsp"%>
     <ui:combine widgets="dhtmlxgrid,dialog,multiselect,messagebox"></ui:combine>
     <ui:combine widgets="validator,inputpro,listselectdialog,dialog,blockui"></ui:combine>
-	<ui:script src="/web/red/js/edite_sec_redpackage.js"></ui:script>
 	
+	<ui:script src="/web/red/js/edite_sec_redpackage.js"></ui:script>
 	<script type="text/javascript">
 			var orgId = '${param.yhdxdh}';
 			var orgName = '${param.yhdxdh}';
@@ -79,9 +79,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
   </div>
 
-  	<div class="container rows ac-btns  clearfix mt20">
-    	<div class="col-6 ac-btns-item"><a href="login.jsp" class="btn green-btn" id="btnphb" >派红包</a></div>
-    	<div class="col-6 ac-btns-item"><a href="login.jsp" class="btn red-btn" >抢红包</a></div>
+  	<div class="clearfix mt20">
+    	<div class="col-6 ac-btns-item"><a href="#" class="btn green-btn" id="btnphb" onClick="qianghh(this)">派红包</a></div>
+    	<div class="col-6 ac-btns-item"><a href="#" class="btn red-btn" id="2" onClick="qianghh(this)">抢红包</a></div>
 	</div>
 
   <div class="rows ico-info clearfix mt20">
@@ -89,11 +89,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       <i class="ico-vip ico"></i>
       <span class="ico-vip-text s2">VIP特权</span>
     </a>
-    <a href="#" class="col-6 ico-info-item">
+    <a href="#" class="col-6 ico-info-item" id="center" onClick="center(this)">
       <i class="ico-vip ico"></i>
-      <span class="ico-vip-text">代理商特权</span>
+      <span class="ico-vip-text">财务中心</span>
     </a>
-    <a href="#" class="col-6 ico-info-item">
+    <a href="faq.jsp" class="col-6 ico-info-item">
       <i class="ico-faq ico"></i>
       <span class="ico-faq-text s2">常见问题</span>
     </a>

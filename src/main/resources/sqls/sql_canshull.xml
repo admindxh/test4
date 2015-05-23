@@ -209,7 +209,7 @@
 	<entry key="select.username.number1">
 	   select count(1) from hbdx_user hbuser where 1=1 {? and hbuser.userphnoe=#userphnoe#}
 	</entry>
-	<!-- 根据用户名查询用户ID -->
+	<!-- 根据用户电话号码查询用户ID -->
 	<entry key="select.username.number2">
 	   select hbuser.yhdxdh from hbdx_user hbuser where 1=1 {? and hbuser.userphnoe=#userphnoe#}
 	</entry>
@@ -228,5 +228,19 @@
 	<!-- 查询下线用户的利率 -->
 	<entry key="select.user.daili.lilv">
 	   select  lv.llbl  from csb_ll lv where 1=1 {? and lv.usernum=#usernum#}
+	</entry>
+	
+	<!-- 根据用户id查询收到的红包记录 -->
+    <entry key="select.recieve">
+      select * from hb_received received where 1=1 {? AND received.USERID=#USERID#}
+    </entry>
+    
+    <!-- 根据用户Id查询发出的红包记录 -->
+    <entry key="select.mysend">
+    	select * from hb_lssue lusse where 1=1 {? AND lusse.USERID=#USERID#}
+    </entry>
+	<!-- 常见问题分类之操作方法内容查询 -->
+	<entry key="select.czff.do">
+	  select proble.czff from hbdx_proble proble where 1=1 {? AND proble.id=#id#}
 	</entry>
 </properties>

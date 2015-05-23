@@ -52,6 +52,56 @@ public class ExchangehbbService extends BaseService{
 	public void setSecLogService(SecLogService secLogService) {
 		this.secLogService = secLogService;
 	}
+
+	/**
+	 * 红包币转账
+	 * @param hbdXuser
+	 */
+	public void savehbbzz(HBDXuser hbdXuser){
+		String id=hbdXuser.getYhdxdh();
+		int hbb=hbdXuser.getHbb();
+		String phone=hbdXuser.getUserphnoe();
+		Map<String, Object> params=new HashMap<String, Object>();
+		params.put("userphnoe", phone);
+		if(StringUtils.isNotEmpty(phone)){
+			Integer number=dao.queryForInt("select.username.number1", params);
+			if (number>0&&number<2){
+				String yhid=dao.queryForString("select.username.number2", params);
+				params.put("yhdxdh", yhid);
+				int hbb1=dao.queryForInt("list.hbb", params);
+				hbb1=hbb1+hbb;
+				params.put("hbb", hbb1);
+				dao.update("update.hbb.test",params);
+				params.put("yhdxdh", id);
+				int hbb2=dao.queryForInt("list.hbb", params);
+				hbb2=hbb2-hbb;
+				params.put("hbb", hbb2);
+				dao.update("update.hbb.test",params);
+			}
+		}
+		
+	}
+	/**
+	 * 根据id查询用户的红包币，并更新数据库
+	 * @param id
+	 * @param num
+	 * @return
+	 */
+	public void getflager(HBDXuser hbdXuser){
+		int number=0;
+		String yhdxdh=hbdXuser.getYhdxdh();
+		int num=hbdXuser.getHbb();
+		if(StringUtils.isNotEmpty(yhdxdh)){
+			Map<String, Object> params=new HashMap<String, Object>();
+			params.put("yhdxdh", yhdxdh);
+			number=dao.queryForInt("list.hbb", params);
+			number=number+num;
+			params.put("hbb", number);
+			Double aggreat=dao.queryForDouble("user.list.aggreatMount", params);
+			params.put("aggreatMount", aggreat);
+			dao.update("update.hbb",params);	
+		}
+	}
 	/**
 	 * 根据用户电话号码查询用户id
 	 * @param userphnoe
@@ -486,6 +536,10 @@ public class ExchangehbbService extends BaseService{
 		
 	}
 	
+	public void getexcRMBZH(){
+		
+	}
+	
 	/**
 	 * 查询红包基金总额（提取红包基金调用的方法）
 	 * @param hbdXuser
@@ -716,7 +770,7 @@ public class ExchangehbbService extends BaseService{
 	 * @return
 	 */
 	public String getNowtime(){
-		SimpleDateFormat dfc = new SimpleDateFormat("yyyyMMdd");//设置日期格式
+		SimpleDateFormat dfc = new SimpleDateFormat("yyyyMMdd hh:mm:ss");//设置日期格式
 		String jsrq=dfc.format(new Date());// new Date()为获取当前系统时间
 		System.out.println(jsrq);
 		return jsrq;
@@ -799,6 +853,18 @@ public String signIn(HttpServletRequest request, String userphnoe) {
 	Session session=new Session();
 	session.setAttribute("userphnoe", userphnoe);
 	return request.getParameter("userphnoe");
+}
+
+/**
+ * 根据电话号码查询用户ID
+ * @param userphnoe
+ * @return
+ */
+public String getHBDXuserById(String userphnoe) {
+	Map<String, Object> params=new HashMap<String, Object>();
+	params.put("userphnoe", userphnoe);
+	String id=dao.queryForString("select.username.number2", params);
+	return id;
 }
 	
 	

@@ -8,10 +8,10 @@
 		<title>
 		    <c:choose>
 				<c:when test="${empty param.yhdxdh}">
-					用户登录
+					常见问题分类录入
 				</c:when>
 				<c:otherwise>
-					编辑用户信息
+					常见问题分类录入
 				</c:otherwise>
 			</c:choose>	
 		</title>
@@ -29,10 +29,10 @@
 			<h2>
 				<c:choose>
 					<c:when test="${empty param.yhdxdh}">
-						用户登录
+						常见问题分类录入
 					</c:when>
 					<c:otherwise>
-						编辑用户信息
+						常见问题分类录入
 					</c:otherwise>
 				</c:choose>	
 			</h2>
@@ -47,11 +47,11 @@
 						<div class="row-fluid">
 							<div class="span6 first">							
 								<c:choose>
-									<c:when test="${empty param.yhdxdh}">
-										用户登录
+									<c:when test="${empty param.id}">
+										常见问题分类录入
 									</c:when>
 									<c:otherwise>
-										编辑用户信息
+										常见问题分类录入
 									</c:otherwise>
 								</c:choose>
 							</div>
@@ -67,35 +67,68 @@
 						<table class="form-table col4-fluid" >
 							<!--<caption>基本信息</caption>-->
 							<tbody>
-							    <input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdxuser.yhdxdh}"/>
+							    <input type="hidden" name="id" id="id" value="${hbproble.id }"/>
 				               						   
 								<tr>
 								    <th>
-										手机号码：
+										基本介绍:
 									</th>
-									<td>
-									     <input type="text"  id="userphnoe" name="userphnoe" data-validator="required" maxlength="20" style="width: 180px;" class="input-large" value="${hbdXuser.userphnoe}"/>
-									</td>
+									<TD><textarea class="input-large" id="jbjs" cols="50" rows="5" name="jbjs" style="width: 330px;height=24;"  validator="length[0,300]">${hbdXuser.notes2}</textarea></TD>
+								</tr>
+								<tr>
+								    <th>
+										操作方法:
+									</th>
+									<TD><textarea class="input-large" id="czff" name="czff" cols="50" rows="5" style="width: 330px;height=24;"  validator="length[0,300]">${hbdXuser.notes2}</textarea></TD>
 									
 								</tr>
-								
-									<tr>
-										<th>
-											登录密码：
-										</th>
-										<td colspan="1" >
-											<input type="password"  id="password" data-validator="required[密码不能为空],equalToField[checkNewPassword,密码和确认密码不一致]"  maxlength="40" style="width: 180px;" class="input-large" />
-										
-									</tr>
-								
-							
+								<tr>
+								    <th>
+										提现问题:
+									</th>
+									
+									 <TD><textarea class="input-large" id="txwt" name="txwt" cols="50" rows="5" style="width: 330px;height=24;"  validator="length[0,300]">${hbdXuser.notes2}</textarea></TD>
+									
+								</tr>	
+								<tr>
+								    <th>
+										联系方式:
+									</th>
+									<td>
+									     <input type="text"  id="lxfs" name="lxfs" data-validator="required" maxlength="20" style="width: 180px;" class="input-large" value="${hbdXuser.userphnoe}"/>
+									</td>
+								</tr>	
+								<tr>
+								    <th>
+										红包币的未来:
+									</th>
+									
+									<TD><textarea class="input-large" id="hbbresult" name="hbbresult" cols="50" rows="5" style="width: 330px;height=24;"  validator="length[0,300]">${hbdXuser.notes2}</textarea></TD>
+									
+								</tr>	
+								<tr>
+								    <th>
+										如何发红包/红包币:
+									</th>
+									<td>
+									    <textarea class="input-large" id="notes" name="notes" cols="50" rows="5" style="width: 330px;height=24;"  validator="length[0,300]">${hbdXuser.notes2}</textarea>
+									</td>
+								</tr
+								<tr>
+								    <th>
+										如何收红包/红包币:
+									</th>
+									<td>
+									    <textarea class="input-large" id="notes1" name="notes1" cols="50" rows="5" style="width: 330px;height=24;"  validator="length[0,300]">${hbdXuser.notes2}</textarea>
+									</td>
+								</tr>		
 							</tbody>
 						</table>							
 					</div>
 					<!-- panel 中间内容 end -->
                     <div class="panel-foot">
 						<div class="form-actions col4-fluid">
-							<button type="button" class="btn" onclick="doSave();return false;"><i class="icon-save"></i>登&nbsp;录</button>
+							<button type="button" class="btn" onclick="doSave();return false;"><i class="icon-save"></i>录&nbsp;入</button>
 							<button type="button" class="btn" onclick="$(this).dialogClose();return false;"><i class="icon-close"></i>关&nbsp;闭</button>
 						</div>
 					</div>

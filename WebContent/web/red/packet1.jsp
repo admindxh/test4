@@ -27,22 +27,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 	 <link rel="stylesheet" href="${contextPath}/web/red/res/css/common.css" />
      <link rel="stylesheet" href="${contextPath}/web/red/res/css/packet.css" />
-     <script src="/web/red/js/edit_sec_paihongbao.js"></script>
+     <script type="text/javascript">
+     
+     </script>
   </head>
   
   <body style="background:#ae0a12;">
+  <form action="" method="post" id="SEC_QUNFA_FOMR" name="">
     <!-- header -->
 	<div class="nav">
 		<i class="ico-arr"></i>
 		<span class="nav-tit">拼手气红包</span>
 	</div>
-
-  <div class="container">
-     <form action="#" id="SEC_QUNFA_FOMR">
+	<input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
+  	<div style="padding-left:15px;padding-right:15px;">
+    
       <div class="send-packet">
-      <input type="hidden" name="hbcID" id="hbcID" value="${redPool.hbcID}"/>
-        <p class="text">红包数量：<input type="number" id="hbnumber" class="num" value="${redPool.hbnumber}"><span>个</span></p>
-        <p class="text">总金额：<input type="text" class="num" value="${redPool.aggreate}"><span>元</span></p>
+      <input type="hidden" name="hblb" id="hblb" value="1"/>
+     
+        <p class="text">红包数量：<input type="text" id="hbnumber" name="hbgs" class="num" value="${hbdXuser.hbgs}"><span>个</span></p>
+        <p class="text">总金额：<input type="text" class="num" name="aggreatMount" value="${hbdXuser.aggreatMount}"><span>元</span></p>
         <p class="tips">每个人抽到的金额随机</p>
         <p class="text" style="font-size:1.4rem;">留言：</p>
         <textarea name="" class="textarea">恭喜发财</textarea>
@@ -52,8 +56,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       		<a href="#" class="btn yellow-btn" onclick="doSavequnfa();return false;">塞进红包</a>
       	</div>
       </div>
-      </form>
+      
   </div>
-
+</form>
 </body>
 </html>
