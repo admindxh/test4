@@ -23,5 +23,6 @@
 	
 	<context:annotation-config/>
 	
-	<context:component-scan base-package="bingo" />  
+	<context:component-scan base-package="bingo" /> 
+	<context:component-scan base-package="redpackage" /> 
 </beans>

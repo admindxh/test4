@@ -31,6 +31,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="${contextPath}/web/red/res/css/packet.css" />
 
 	<script src="${contextPath}/web/red/res/js/zepto.js"></script>
+	<ui:combine widgets="framework-common"></ui:combine>
+	<script type="text/javascript" src="portal/scripts/portal_rest_services.js"></script>
 </head>
   
  <body style="padding-bottom:20px;">
@@ -80,8 +82,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </div>
 
   	<div class="clearfix mt20">
-    	<div class="col-6 ac-btns-item"><a href="#" class="btn green-btn" id="btnphb" onClick="qianghh(this)">派红包</a></div>
-    	<div class="col-6 ac-btns-item"><a href="#" class="btn red-btn" id="2" onClick="qianghh(this)">抢红包</a></div>
+    	<div class="col-6 ac-btns-item"><a href="#" class="btn green-btn" id="btnphb" onClick="qianghh(this)">抢红包</a></div>
+    	<div class="col-6 ac-btns-item"><a href="#" class="btn red-btn" id="2" onClick="qianghh(this)">派红包</a></div>
 	</div>
 
   <div class="rows ico-info clearfix mt20">

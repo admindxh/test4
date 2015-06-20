@@ -74,7 +74,7 @@
 										用户名称：
 									</th>
 									<td>
-									     <input type="text"  onblur="checkuser(this.value);" id="username" name="username" data-validator="required[用户名不能为空]" maxlength="20" style="width: 180px;" class="input-large" value="${hbdXuser.username}"/>
+									     <input type="text" id="username" name="username" data-validator="required[用户名不能为空]" maxlength="20" style="width: 180px;" class="input-large" value="${hbdXuser.username}"/>
 									</td>
 									<th>
 										激 活 码：

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import bingo.common.BaseService;
 import bingo.common.core.utils.StringUtils;
+import bingo.modules.securityConsole.redpackge.RedPool;
+import bingo.modules.securityConsole.redpackge.RedpackageService;
 import bingo.modules.securityConsole.symx.ExchangehbbService;
 import bingo.modules.securityConsole.yhdl.HBDXuser;
 /**
@@ -20,7 +22,15 @@ import bingo.modules.securityConsole.yhdl.HBDXuser;
  */
 @Service
 public class ReceivedService extends BaseService{
+	
+	private RedpackageService redpackageService;
 
+	public RedpackageService getRedpackageService() {
+		return redpackageService;
+	}
+	public void setRedpackageService(RedpackageService redpackageService) {
+		this.redpackageService = redpackageService;
+	}
 	/**
 	 * 保存收到的红包
 	 * @param received
@@ -37,8 +47,16 @@ public class ReceivedService extends BaseService{
 		received.setFromname(hblx);
 		Double hbze=hbdXuser.getAggreatMount();
 		received.setMonney(hbze);
-		if(StringUtils.isEmpty(received.getId())){
-			//dao.insert(received);
+		RedPool redPool=null;
+		redpackageService.UpdateRedpackge(hbdXuser, redPool);
+		/*Map<String, Object> paramsMap=new HashMap<String, Object>();
+		paramsMap.put("yhdxdh", yhdxdh);
+		Double aggreatMount=dao.queryForDouble("user.list.aggreatMount", paramsMap);
+		aggreatMount=aggreatMount+hbze;
+		paramsMap.put("aggreatMount", aggreatMount);
+		dao.update("update.aggreate",paramsMap);//更新用户表中红包总额
+*/		if(StringUtils.isEmpty(received.getId())){
+			dao.insert(received);//保存我收到的红包
 		}else {
 			dao.update(received);
 		}

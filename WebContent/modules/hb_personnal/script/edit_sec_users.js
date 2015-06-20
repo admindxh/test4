@@ -3,10 +3,10 @@
  */
 function doSave() {
 	/*alert(saveuser);*/
-	if(saveuser==false){
+	/*if(saveuser==false){
 		alert('用户名无效，不能保存');
 		return false;
-	}
+	}*/
 	
 	/*alert(saveflag);*/
 	if(saveflag==false){
@@ -54,7 +54,7 @@ function check(value){
 			}, function(response) {
 				exists = response;
 			}, {
-				async : true
+				async : false
 			});
 	if (exists) {
 		saveflag=true;
@@ -74,7 +74,7 @@ function check(value){
  * 验证用户名的唯一性
  * @param value
  * @return
- */
+ *//*
 var saveuser=true;
 function checkuser(value){
 	var exist = null;
@@ -85,18 +85,17 @@ function checkuser(value){
 			}, function(response) {
 				exist = response;
 			}, {
-				async : false
+				async : true
 			});
 	if (exist) {
+		saveuser=true;
+		alert('用户名可用');
+	} else {
 		saveuser=false;
 		
 		alert('用户名无效');
-	} else {
-		saveuser=true;
-		
-		alert('用户名可用');
 	}
-}
+}*/
 
 /**
 * 获取异步通信对象 XMLHttpRequest

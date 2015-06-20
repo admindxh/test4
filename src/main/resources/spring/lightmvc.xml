@@ -44,6 +44,7 @@
 			*     /{ActionOrController}.do  	 {ActionOrController}.index,home.{ActionOrController}
 			*     /{controller*}/{action}.do     {controller}.{action}
 			*     /jso/*     					 jso.index
+			*     /web/red/*                     home.index
             </value>
         </property>    
     </bean>   

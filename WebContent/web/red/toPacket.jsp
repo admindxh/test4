@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!doctype html>
 <html>
 <head>
-    <title ng-bind="title">派红包</title>
+    <title ng-bind="title">抢红包</title>
     <%@include file="/common/meta.jsp"%>
 		<ui:combine widgets="validator,inputpro,listselectdialog,dialog,blockui"></ui:combine>
 		<ui:script src="/web/red/js/edite_sec_redpackage.js"></ui:script>

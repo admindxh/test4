@@ -57,12 +57,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="col-6 tips rtext">02月18日 18:25</div>
 		</div>
 	</div>
-	<input type="text" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
+	<input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
 	<div class="container mt20">
 		<a href="#" class="btn red-btn" onClick="sendpacket()">我也要发红包</a>
 	</div>
 	<div class="container mt20">
-		<a href="#" class="btn white-btn">关闭</a>
+		<a href="#" class="btn white-btn" onclick="window.Close();return false;">关闭</a>
 	</div>
 	</form>
 </body>

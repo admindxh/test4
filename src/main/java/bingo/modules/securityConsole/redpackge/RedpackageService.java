@@ -333,11 +333,10 @@ public class RedpackageService extends BaseService{
 		//RedpackageService redpackageService=new RedpackageService();
 		
 		String yhdxdh = hbdXuser.getYhdxdh();//红包编号
-		String notes=hbdXuser.getNotes2();//备注
-		Integer hbgs=hbdXuser.getHbgs();//红包个数
+		String notes="恭喜发财";//备注
+		Integer hbgs=1;//红包个数
 		Double aggreatMount=hbdXuser.getAggreatMount();//红包总额
 		Double everyoneTotal=hbdXuser.getEveryoneTotal();//单个红包金额
-		String hblbInteger=redPool.getHblb();
 		 int sum=dao.queryForInt("user.list.hbgs", hbdXuser);
 		 double number=dao.queryForDouble("user.list.everyoneTotal", hbdXuser);
 		 double y=dao.queryForDouble("user.list.aggreatMount", hbdXuser);
@@ -362,7 +361,7 @@ public class RedpackageService extends BaseService{
 				 	  //6.计算每天收益总和跟团对提成收益总和的总数
 					Double yDouble=sums+num;
 				 	  //7.判断总收益是否大于投资额度的3倍
-					if(yDouble>=m*3){
+					if(yDouble>=m*3&&yDouble!=0){
 						params.put("status", "p");
 						dao.update("update.status",params);
 						JOptionPane.showMessageDialog(null, "你的收益额度过高，请下次再抢红包");
@@ -372,7 +371,7 @@ public class RedpackageService extends BaseService{
 						if(n<2){
 							int times=dao.queryForInt("select.times", params);
 							/*int day=dao.queryForInt("list.date", params);*/
-							if(times<=5&&times>0){
+							if(times<5){
 								times=times+1;
 								System.out.println(times);
 								params.put("times", times);
@@ -386,30 +385,31 @@ public class RedpackageService extends BaseService{
 							 		System.out.println(sum);
 							 		params.put("hbgs",sum);
 							 	//	deleteMath(hbdXuser);
-							 		if(StringUtils.isNotEmpty(redPool.getHblb())){
-							 			if(hbgs<=number1&&number1>0){
-								 			number1=number1-hbgs;
-									 		System.out.println(number1);
-											params.put("hbnumber", number1);
-							 		}else {
-							 				b=false;
-									     }	
+							 		/*if(StringUtils.isNotEmpty(redPool.getHblb())){
 							 			
-							 		}
+							 			
+							 		}*/
+							 		if(hbgs<=number1&&number1>0){
+							 			number1=number1-hbgs;
+								 		System.out.println(number1);
+										params.put("hbnumber", number1);
+							 			}else {
+						 				b=false;
+								     }	
 							 		b=false;
 							 		
 								} while (b);
 								
 							 	//计算单个红包累计
 							 	
-							 	    boolean everyone=true;
+							 	    /*boolean everyone=true;
 								 	do {
 								 		if(everyoneTotal<=number);
 								 		number=number+everyoneTotal;
 								 		System.out.println(number);
 								 		params.put("everyoneTotal",number);
 								 		everyone=false;
-									} while (everyone);
+									} while (everyone);*/
 						 	      
 								 //计算总金额
 								
@@ -420,21 +420,17 @@ public class RedpackageService extends BaseService{
 									 y=y+aggreatMount;
 									 System.out.println(y);
 									 params.put("aggreatMount", y);
-									 if(StringUtils.isNotEmpty(redPool.getHblb())){
-										 if(aggreatMount<=areement&&areement>0);
-											areement=(areement-aggreatMount);
-											System.out.println(areement);
-											params.put("aggreate", areement);
-									 }else {
+									 if(aggreatMount<=areement&&areement>0);
+										areement=(areement-aggreatMount);
+										System.out.println(areement);
+										params.put("aggreate", areement);
 										total=false;
-									}
-									
-									 total=false;
 								 }while(total);
 						 	  dao.update("redpackge.putonghb", params);
-						 	  if(StringUtils.isNotEmpty(redPool.getHblb())){
-						 		 dao.update("list.hbc.update",params);
-						 	  } 	 
+						 	  dao.update("list.hbc.update",params);
+						 	  /*if(StringUtils.isNotEmpty(redPool.getHblb())){
+						 		 
+						 	  } 	*/ 
 							}else {
 								JOptionPane.showMessageDialog(null, "新注册用户当天只能抢红包五次，请明天再来");
 							}		
@@ -448,16 +444,14 @@ public class RedpackageService extends BaseService{
 						 		System.out.println(sum);
 						 		params.put("hbgs",sum);
 						 	//	deleteMath(hbdXuser);
-						 		if(StringUtils.isNotEmpty(redPool.getHblb())){
-						 			if(hbgs<=number1&&number1>0){
-							 			number1=number1-hbgs;
-								 		System.out.println(number1);
-										params.put("hbnumber", number1);
-						 		}else {
-						 				b=false;
-								     }	
-						 			
-						 		}
+						 		if(hbgs<=number1&&number1>0){
+						 			number1=number1-hbgs;
+							 		System.out.println(number1);
+									params.put("hbnumber", number1);
+						 			}else {
+					 				b=false;
+							     }	
+					 			
 						 		b=false;
 						 		
 							} while (b);
@@ -482,24 +476,23 @@ public class RedpackageService extends BaseService{
 								 y=y+aggreatMount;
 								 System.out.println(y);
 								 params.put("aggreatMount", y);
-								 if(StringUtils.isNotEmpty(redPool.getHblb())){
-									 if(aggreatMount<=areement&&areement>0);
-										areement=(areement-aggreatMount);
-										System.out.println(areement);
-										params.put("aggreate", areement);
+								/* if(StringUtils.isNotEmpty(redPool.getHblb())){
+									
 								 }else {
 									total=false;
-								}
-								
+								}*/
+								 if(aggreatMount<=areement&&areement>0);
+									areement=(areement-aggreatMount);
+									System.out.println(areement);
+									params.put("aggreate", areement);
 								 total=false;
 							 }while(total);
 					 	  dao.update("redpackge.putonghb", params);
-					 	  if(StringUtils.isNotEmpty(redPool.getHblb())){
-					 		 dao.update("list.hbc.update",params);
-					 	  } 	 
-						}
-						
-						
+					 	  dao.update("list.hbc.update",params);
+					 	 /* if(StringUtils.isNotEmpty(redPool.getHblb())){
+					 		 
+					 	  } 	*/ 
+						}	
 					}
 			}
 		 }else{
@@ -642,6 +635,17 @@ public class RedpackageService extends BaseService{
 			//hbdXuser.setPassword(SecurityContext.getProvider().encryptPassword(hbdXuser.getPassword()));
 			dao.insert(hbdXuser);
 			secLogService.logOperation("添加用户信息", "添加用户(Name=" + hbdXuser.getUserphnoe() + ")成功!");
+			Map<String, Object> params=new HashMap<String, Object>();
+			params.put("userphnoe", userphnoe);
+			String idString=dao.queryForString("select.username.number2", params);//根据电话号码查红包中的用户id
+			SimpleDateFormat dfc = new SimpleDateFormat("yyyyMMdd");//设置日期格式
+			String nowtime=dfc.format(new Date());// new Date()为获取当前系统时间
+			RedPackge redPackge=new RedPackge();
+			redPackge.setCzrq(nowtime);
+			redPackge.setQxrq(nowtime);
+			redPackge.setDqrq(nowtime);
+			redPackge.setYhdhfk(idString);
+			dao.insert(redPackge);//用户注册将数据插入红包中
 		}else {
 			dao.updateFieldsExcluded(hbdXuser, "password");
 			secLogService.logOperation("更新用户信息", "更新用户信息(Name=" + hbdXuser.getUserphnoe() + ")成功!");

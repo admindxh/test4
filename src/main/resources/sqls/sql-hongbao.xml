@@ -303,7 +303,7 @@ values(hb.hbjj=#hbjj#,hb.zhstatus="zhstatus",hb.crje=#crje#,hb.czrq=#czrq#,hb.qx
     
     <!-- 统计起始日期和结束日期的时间差 -->
     <entry key="list.date">
-      select (to_date(to_char(sysdate,'yyyyMMdd'),'yyyyMMdd') - to_date(mx.qsrq,'yyyyMMdd')) as day from hbdx_user users left join hbdx_symx mx on mx.yhdxdhfk=users.yhdxdh where 1=1 {? and users.yhdxdh=#yhdxdh#} 
+      select (to_date(to_char(sysdate,'yyyyMMdd'),'yyyyMMdd') - to_date(hb.czrq,'yyyyMMdd')) as day from hbdx_user users left join hbdx_hb hb on hb.yhdhfk=users.yhdxdh where 1=1{? and users.yhdxdh=#yhdxdh#} 
     </entry>
     <!-- 统计红包中的充值日期和到期日期(用于红包基金统计日期) -->
     <entry key="list.hbjj.date">

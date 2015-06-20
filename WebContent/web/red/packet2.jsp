@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<i class="ico-arr"></i>
 			<span class="nav-tit">普通红包</span>
 		</div>
-	<input type="text" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
+	<input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
   	<div style="padding-left:15px;padding-right:15px;">
       	<div class="send-packet">
         	<p class="text">红包数量：<input type="text" class="num" name="hbgs" value="${hbdXuser.hbgs }" ><span>个</span></p>

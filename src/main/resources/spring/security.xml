@@ -6,11 +6,21 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd" default-lazy-init="true">
 	
+	<!-- 前台登陆过滤器 -->
+	<bean id="redloginsecurityFilter" class="bingo.modules.securityConsole.webController.ReduserLogin" >
+		
+        <property name="webredPatternString" value="/openid*|/images/*|/themes/*|*.css|*.js|*.png|*.jpg|*.gif|*.bmp|/common/*|/web/red/*|portal/layouts/*"/>
+       
+	</bean>
+	<!-- 后台登陆 过滤器-->
 	<bean id="securityFilter" class="bingo.integration.security.SmartSecurityFilter" >
-		<property name="ignorePatternString" value="/openid*|/images/*|/themes/*|*.css|*.js|*.png|*.jpg|*.gif|*.bmp|/common/*"></property>
+       <!--  <property name="ignorePatternString" value="/openid*|/images/*|/themes/*|*.css|*.js|*.png|*.jpg|*.gif|*.bmp|/common/*|/web/red/*|portal/layouts/*"/> -->
+       <!--  <property name="ignorePatternString" value="/openid*|/images/*|/themes/*|*.css|*.js|*.png|*.jpg|*.gif|*.bmp|/web/red/*"></property>
+		<property name="ignorePatternString" value="/openid*|/images/*|/themes/*|*.css|*.js|*.png|*.jpg|*.gif|*.bmp|/common/*|/web/red/*"></property> -->
 		<!-- <property name="loginMode" value="${Profile.Security.Login_Mode}"></property> -->
 	</bean>
 	
+ 	
 	<!-- 对接1.5.0版本SSO-->
 	<bean id="ssoServlet" class="bingo.sso.client.openid.servlets.SingleSignOnServlet">
 		<property name="initParam">

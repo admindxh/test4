@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="reg-form-con">
 					 <input id="yhdxdh" name="yhdxdh" type="hidden" value="${hbdxuser.yhdxdh }">
 						<p>手机号码</p>
-						<p><input type="text" class="input tel" id="userphnoe" data-validator="required,func[checkphnoe]" name="userphnoe" onblur="return cardclick()"></p>
+						<p><input type="text" class="input tel" id="userphnoe" data-validator="required,func[checkphnoe]" name="userphnoe" ></p>
 						<p>密码</p>
 						<p><input type="password" class="input pw" id="password" name="password" onblur="return istopuser()"></p>
 						<!-- 如果有推荐人则读取推荐人 -->

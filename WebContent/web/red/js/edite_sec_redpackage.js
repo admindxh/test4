@@ -274,7 +274,7 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
 	 */
 	var saveflag=true;
 
-	function check(value){
+	function checks(value){
 		var exists = null;
 		var yhdxdh="";
 		
@@ -340,8 +340,8 @@ function doOnBeforeMenuRender(grid, rowData, menuItems) {
 			id=obj.id;
 			
 			if(id=="2"){
-				var url1='~/poral/getValue1.do?id='+id;
-				window.location.href=$.utils.parseUrl(url);
+				var path='~/poral/getValue1.do?id='+id;
+				window.location.href=$.utils.parseUrl(path);
 			}
 		}
 		var url='~/poral/getValue2.do?id='+id;

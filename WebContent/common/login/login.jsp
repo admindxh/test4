@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<%@page import="org.lightframework.mvc.Result"%>
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@page import="bingo.security.SecurityContext"%>
 <%@include file="/common/taglibs.jsp"%>
 <%
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
-
+	System.out.println(username);
 	if ("login".equals(request.getParameter("action"))) {
 		if (null == username || "".equals(username.trim())) {
 			request.setAttribute("errors", "请输入登录帐号");
@@ -15,9 +16,9 @@
 
 				String returnUrl = request.getParameter("returnUrl");
 				if (null != returnUrl && !"".equals(returnUrl)) {
-					response.sendRedirect(returnUrl);
+						response.sendRedirect(request.getContextPath());
 				} else {
-					response.sendRedirect("/" + request.getContextPath());
+					response.sendRedirect("/" + request.getContextPath());	
 				}
 			} else {
 				request.setAttribute("errors", "用户名或密码不正确");

@@ -27,7 +27,7 @@
 	<form action="#" id="SEC_HBB_FOMR" data-widget="validator" class="form-horizontal">
 	<input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }">
 	<div class="container transfer-info mt20">
-		<p><span>&nbsp;&nbsp;接收账号：</span><input type="text" id="userjhm" name="userjhm" onblur="check(this.value);" value="${hbdXuser.userjhm }"></p>
+		<p><span>&nbsp;&nbsp;接收账号：</span><input type="text" id="userjhm" name="userjhm" onblur="checks(this.value);" value="${hbdXuser.userjhm }"></p>
 	</div>
 	<div class="container transfer-info" id="inputPad">
 		<div class="clearfix">

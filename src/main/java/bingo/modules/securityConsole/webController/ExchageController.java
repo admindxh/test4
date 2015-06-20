@@ -64,21 +64,21 @@ public class ExchageController {
 	 * @param yhdxdh
 	 */
     @RequestMapping(value="createusers")
-	public void createusers(String userphnoe){
+	public void createusers(String userphnoe,String id){
     	HBDXuser users=new HBDXuser();
-		String id=exchangehbbService.getHBDXuserById(userphnoe);
-		if(StringUtils.isNotEmpty(userphnoe)){
-			
-			String name=exchangehbbService.getUserphone(id);
+		String yhdxdh=exchangehbbService.getHBDXuserById(userphnoe);
+		if(StringUtils.isNotEmpty(yhdxdh)){
+			String name=exchangehbbService.getUserphone(yhdxdh);
 			if(name.equals("0")||name==null){
 				name="暂无介绍人";
 			}
 			Result.setAttribute("title", "创建下线用户");
-			Result.setAttribute("userphnoe", userphnoe);;
+			Result.setAttribute("userphnoe", userphnoe);
+			Result.setAttribute("id", id);
 			Result.setAttribute("name",name );
-			Result.setAttribute("hbdxuser",exchangehbbService.getYhdlById(id));
-			Result.forward("/web/red/login.jsp");
-		}	
+			Result.setAttribute("hbdxuser",exchangehbbService.getYhdlById(yhdxdh));
+		}
+		Result.forward("/web/red/login.jsp");
 	}
 
     /**

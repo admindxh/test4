@@ -30,7 +30,7 @@
 		<i class="ico-arr"></i>
 		<span class="nav-tit">领红包</span>
 	</div>
-	<input type="text" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
+	<input type="hidden" name="yhdxdh" id="yhdxdh" value="${hbdXuser.yhdxdh }"/>
 	<div class="packet-body">
     <div class="to-packet" style="position:static;">
   		<img src="${contextPath}/web/red/res/images/bg-getP.jpg" alt="">

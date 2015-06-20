@@ -32,7 +32,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<!-- 用户登陆拦截器 -->
+	<!-- 用户登陆拦截器 后台-->
 	<filter>
 		<filter-name>DelegateSecurityFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -49,21 +49,27 @@
 		<filter-name>DelegateSecurityFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<filter-mapping>
-		<filter-name>DelegateSecurityFilter</filter-name>
-		<url-pattern>/f/*</url-pattern>
-	</filter-mapping>
-	<!-- end -->
 	
-	<servlet>
-		<servlet-name>ReduserLogin</servlet-name>
-		<servlet-class>bingo.modules.securityConsole.webController.ReduserLogin</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ReduserLogin</servlet-name>
-		<url-pattern>/login.do</url-pattern>
-	</servlet-mapping>
-          
+	<!-- end -->
+    
+    <!-- 用户拦截器前台 -->
+    <filter>
+		<filter-name>RedLoginFilterProxy</filter-name>
+		<filter-class>bingo.modules.securityConsole.webController.RedLoginFilterProxy</filter-class>
+		<init-param>
+		    <param-name>redloginBeanName</param-name>
+		    <param-value>redloginsecurityFilter</param-value>
+		</init-param>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>RedLoginFilterProxy</filter-name>
+		<url-pattern>/web/red/*</url-pattern>
+	</filter-mapping>
+	<!-- end -->  
 	<filter>
 		<filter-name>LightMvc-Filter</filter-name>
 		<filter-class>org.lightframework.mvc.MvcFilter</filter-class>
@@ -123,9 +129,11 @@
 		<servlet-name>combineServlet</servlet-name>
 		<url-pattern>/combine/*</url-pattern>
 	</servlet-mapping>
+	<!-- 后台调用拦截器 -->
 	<servlet>
 		<servlet-name>openid</servlet-name>
 		<servlet-class>bingo.integration.spring.DelegatingServletProxy</servlet-class>
+		
 		<init-param>
 			<param-name>targetBeanName</param-name>
 			<param-value>ssoServlet</param-value>
@@ -143,6 +151,29 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<!-- 前台调用拦截器 -->
+	<servlet>
+		<servlet-name>openid</servlet-name>
+		<servlet-class>bingo.modules.securityConsole.webController.RedLoginServletProxy</servlet-class>
+		<init-param>
+			<param-name>redloginBeanName</param-name>
+			<param-value>ssoServlet</param-value>
+		</init-param>
+		<init-param>
+			<param-name>private_key</param-name>
+			<param-value>
+				MIIBSwIBADCCASwGByqGSM44BAEwggEfAoGBAP1/U4EddRIpUt9KnC7s5Of2EbdSPO9EAMMeP4C2
+				USZpRV1AIlH7WT2NWPq/xfW6MPbLm1Vs14E7gB00b/JmYLdrmVClpJ+f6AR7ECLCT7up1/63xhv4
+				O1fnxqimFQ8E+4P208UewwI1VBNaFpEy9nXzrith1yrv8iIDGZ3RSAHHAhUAl2BQjxUjC8yykrmC
+				ouuEC/BYHPUCgYEA9+GghdabPd7LvKtcNrhXuXmUr7v6OuqC+VdMCz0HgmdRWVeOutRZT+ZxBxCB
+				gLRJFnEj6EwoFhO3zwkyjMim4TwWeotUfI0o4KOuHiuzpnWRbqN/C/ohNWLx+2J6ASQ7zKTxvqhR
+				kImog9/hWuWfBpKLZl6Ae1UlZAFMO/7PSSoEFgIUNpcitiP8w+8h3jb+DlOa0jxdB9o=				
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>openid</servlet-name>
 		<url-pattern>/openid/*</url-pattern>

@@ -947,10 +947,15 @@ public String signIn(HttpServletRequest request, String userphnoe) {
  * @return
  */
 public String getHBDXuserById(String userphnoe) {
+	String id=null;
 	Map<String, Object> params=new HashMap<String, Object>();
 	params.put("userphnoe", userphnoe);
-	String id=dao.queryForString("select.username.number2", params);
+	int num=dao.queryForInt("select.username.number1", params);
+	if (num==1) {
+		id=dao.queryForString("select.username.number2", params);
+	}
 	return id;
+	
 }
 
 public double getredpackege(String id){

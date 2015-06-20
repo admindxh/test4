@@ -3,6 +3,8 @@ package bingo.modules.securityConsole.webController;
 /**
  * 前台页面调用controller类
  */
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +21,7 @@ import bingo.modules.securityConsole.symx.ExchangehbbService;
 import bingo.modules.securityConsole.yhdl.HBDXuser;
 
 @Controller
-@RequestMapping(value = "${contextPath}/web/red/")
+@RequestMapping(value = "${contextPath}/web/red/poral")
 public class PoralController {
 	
 	private RedpackageService redpackageService;
@@ -33,22 +35,35 @@ public class PoralController {
 	}
 	/**
 	 * 随机生成单个红包金额
+	 * 随机生成红包金额不超过50元
 	 * @return
 	 */
 	public float doTotal(){
-		
+		int max=50;
+        int min=0;
 		float id2 = 0;
 			//  int number=dao.queryForInt("list.hbc.total", redPool);
 			    float number=redpackageService.selectReedPool();
 			//    int count=redpackageService.getNummber();
-					if(number>0);
-					 id2=(int)(Math.random()*(number-1)+1);
-					 System.out.println(id2);
+					if(number>0&&number<=50){
+						id2=(int)(Math.random()*(number-1)+1);
+						return id2;
+					}else {
+						 Random random = new Random();
+						 id2= random.nextInt(max)%(max-min+1) + min;
+					}
 	   return id2;
-	   // String sqlString2="select sum(aggreatmount) from hbdx_hbc where 1=1";//统计金额
-	   
+	   // String sqlString2="select sum(aggreatmount) from hbdx_hbc where 1=1";//统计金额  
 	}
-
+    /*public static void main(String[] args){
+    	int number=1000;
+    	int max=50;
+        int min=0;
+        Random random = new Random();
+    	int s = random.nextInt(max)%(max-min+1) + min;
+    	//int id=(int)(Math.random()*(number-1)+1);
+    	System.out.println(s);
+    }*/
 	/**
 	 * 登陆用户登陆成功，跳转到派红包页面否则跳转到注册页面
 	 * 派红包
@@ -68,25 +83,26 @@ public class PoralController {
 					if(id.equals("btnphb")){
 						float y=this.doTotal();//抢到单个红包金额
 						Result.setAttribute("hbze", y);
-					    Result.forward("/web/red/toPacket.jsp");
+					    Result.forward("/web/red/toPacket.jsp");//派红包
 					}else if(id.equals("2")){
-						 Result.forward("/web/red/getPacket.jsp");
+						 Result.forward("/web/red/getPacket.jsp");//领红包
 					}else{
 						//判断用户是否充值
 						boolean money=redpackageService.getusermoney(yhdxdh);
-						if(money=true){
-							Result.forward("/web/red/center.jsp");
-						}
-						
+						if(money==true){
+							Result.forward("/web/red/center.jsp");//财务中心
+						}else {
+							Result.forward("/web/red/index.jsp");//财务中心
+						}	
 					}   
 				}
 				
 			}else {
-				Result.forward("/web/red/register.jsp");
+				Result.forward("/web/red/register.jsp");//注册
 			}
 			
 		}else {
-			Result.forward("/web/red/register.jsp");
+			Result.forward("/web/red/register.jsp");//注册
 		}
 		
 	}
@@ -142,4 +158,9 @@ public class PoralController {
     	  }
       }
     
+      public void dosendPacket(String yhdxdh){
+    	  	Result.setAttribute("title", "我也要发红包");
+    		Result.setAttribute("hbdXuser", redpackageService.getQueryById(yhdxdh));
+    		Result.forward("/web/red/makePacket.jsp");
+      }
 }
